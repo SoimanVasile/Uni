@@ -6,7 +6,7 @@ from repository.repositoryStudent import RepoStudent
 from repository.repository_disciplina import RepoDisciplina
 from repository.repository_nota import RepoNote
 
-from validare.validare_student import verificare_nume_student
+from validare.validare_nota import ValidareNota
 
 from servicii.service_student import ServiceStudenti
 from servicii.service_disciplina import ServiceDisciplina
@@ -18,9 +18,12 @@ repo_student = RepoStudent()
 repo_disciplina = RepoDisciplina()
 repo_nota = RepoNote()
 
+validare_nota = ValidareNota()
+
 service_studenti = ServiceStudenti(repo_student)
 service_discipline = ServiceDisciplina(repo_disciplina)
-service_note = ServiceNote(repo_disciplina, repo_student, repo_nota)
+service_note = ServiceNote(
+    repo_disciplina, repo_student, repo_nota, validare_nota)
 
 UI = Consola(service_studenti, service_note, service_discipline)
 

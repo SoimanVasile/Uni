@@ -553,6 +553,34 @@ class TestNoteService (unittest.TestCase):
         with self.assertRaises(EroareValidare):
             self.validare_nota.validare_nota(nota_gresita)
 
+    def test_sterge_nota(self):
+        """
+        Testeaza stergerea unei note prin service
+        """
+        nota = Note(1, 1, 1, 10)
+        self.repo_note.adauga_nota(nota)
+        nota2 = Note(2, 2, 3, 9.4)
+        self.repo_note.adauga_nota(nota2)
+
+        self.service_note.sterge_nota(1)
+
+        self.assertEqual(len(self.repo_note), 1)
+
+    def test_update_nota(self):
+        """
+        Testeaza actualizarea unei note prin service
+        """
+        nota = Note(1, 1, 1, 5.64)
+        self.repo_note.adauga_nota(nota)
+
+        nota_actualizata = Note(1, 1, 1, 6.23)
+        self.service_note.update_nota(nota_actualizata)
+
+        self.assertEqual(len(self.repo_note), 1)
+
+        note = self.repo_note.get_all()
+        self.assertLess(abs(note[0].get_nota_student()-6.23), 0.000001)
+
 
 if __name__ == '__main__':
     unittest.main()

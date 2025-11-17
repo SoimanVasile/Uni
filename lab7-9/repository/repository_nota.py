@@ -53,7 +53,7 @@ class RepoNote:
         returneaza lista de note
         :return lista de note
         '''
-        return list(self.__repo_note.values())
+        return list(self.__note.values())
 
     def creare_id_nota(self):
         id_existente = list(self.__note.keys())

@@ -40,3 +40,20 @@ class ServiceNote:
             raise EroareRepo(erori)
 
         self.__repo_nota.adauga_nota(nota)
+
+    def sterge_nota(self, id_nota: int):
+        """
+        sterge o nota in repo
+        :parem id_nota -> idul notei
+        """
+        self.__repo_nota.sterge_nota(id_nota)
+
+    def update_nota(self, nota: int):
+        """
+        actualizeaza o nota din repo
+        :parem nota-> nota
+        """
+        self.__repo_nota.update_nota(nota)
+
+    def creare_id_nota(self):
+        return self.__repo_nota.creare_id_nota()

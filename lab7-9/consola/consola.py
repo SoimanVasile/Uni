@@ -27,7 +27,7 @@ class Consola:
             "update_disciplina": [self.ui_update_disciplina, 3, [int, str, str]],
             "cauta_student": [self.ui_cauta_student, 1, [int]],
             "cauta_disciplina": [self.ui_cauta_disciplina, 1, [int]],
-            "adaugare_nota": [self.ui_adauga_nota, 3, [int, int, int]],
+            "adauga_nota": [self.ui_adauga_nota, 3, [int, int, float]],
         }
 
     def run(self):
@@ -74,6 +74,12 @@ class Consola:
             "7. sterge_disciplina {id_disciplina} {nume_disciplina} {nume_profesor} - sterge disciplina cu id ul dat")
         print(
             "8. update_disciplina {id_disciplina} {nume_disciplina} {nume_profesor} - actualizeaza disciplina cu {id_disciplina} cu numele introduse")
+        print(
+            "9. cauta_student {id_student} - afiseaza studentul cu idul respectiv")
+        print(
+            "10. cauta_disciplina {id_disciplina} - afiseaza disciplina cu idul respectiv")
+        print(
+            "11. adauga_nota {id_student} {id_disciplina} {nota_student} - adauga o nota la studentul dat la materia respectiva")
 
     def verificare_parametru(self, comanda, parametri_comanda):
         '''
@@ -261,11 +267,12 @@ class Consola:
         '''
         adauga nota in repo
         '''
+        id_nota = self.__service_note.creare_id_nota()
         id_student = paramaetri_comanda[0]
         id_disciplina = paramaetri_comanda[1]
         valoare = paramaetri_comanda[2]
 
-        nota = Note(id_student, id_disciplina, valoare)
+        nota = Note(id_nota, id_student, id_disciplina, valoare)
 
         try:
             self.__service_note.adauga_note(nota)
@@ -273,4 +280,4 @@ class Consola:
             print("EroareRepo>> ", e)
             return
 
-        print("Am adaugat nota cu succes")
+        print(f"Am adaugat nota cu succes cu id {id_nota}")
