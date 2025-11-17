@@ -6,11 +6,7 @@ from exceptii.EroareRepo import EroareRepo
 
 class RepoNote:
     def __init__(self):
-        self.__repo_note = {}
-
-    def verificare_id_exista(self, id_nota):
-        if id_nota in self.__note.keys():
-            raise EroareRepo("id exista deja!\n")
+        self.__note = {}
 
     def adauga_nota(self, nota: Note):
         '''
@@ -18,33 +14,25 @@ class RepoNote:
         :parem nota -> nota
         :return -
         '''
+        id_nota = nota.get_id_nota()
 
-        id_nota = (nota.get_id_student(), nota.get_id_disciplina())
+        if id_nota in self.__note.keys():
+            raise EroareRepo("Id nota exista deja!\n")
 
-        try:
-            self.verificare_id_exista(id_nota)
-        except EroareRepo as e:
-            print("eroareRepo >>", e)
-            return
+        self.__note[id_nota] = nota
 
-        self.__repo_note[id_nota] = nota
-
-    def sterge_nota(self, nota: Note):
+    def sterge_nota(self, id_nota: Note):
         '''
         sterge o nota din repo
         :parem nota -> nota
         :return -
         '''
 
-        id_nota = (nota.get_id_student(), nota.get_id_disciplina())
-
-        try:
-            self.verificare_id_exista(id_nota)
-        except EroareRepo as e:
-            print("eroareRepo >>", e)
+        if id_nota not in self.__note.keys():
+            raise EroareRepo("id nu exista!\n")
             return
 
-            del self.__note[id_nota]
+        del self.__note[id_nota]
 
     def update_nota(self, nota: Note):
         '''
@@ -53,15 +41,12 @@ class RepoNote:
         :return -
         '''
 
-        id_nota = (nota.get_id_student(), nota.get_id_disciplina())
+        id_nota = nota.get_id_nota()
 
-        try:
-            self.verificare_id_exista(id_nota)
-        except EroareRepo as e:
-            print(" eroareRepo >>", e)
-            return
+        if id_nota not in self.__note.keys():
+            raise EroareRepo("id nu exista!\n")
 
-        self.__repo_note[id_nota] = nota
+        self.__note[id_nota] = nota
 
     def get_all(self):
         '''
@@ -69,3 +54,16 @@ class RepoNote:
         :return lista de note
         '''
         return list(self.__repo_note.values())
+
+    def creare_id_nota(self):
+        id_existente = list(self.__note.keys())
+        if len(id_existente) == 0:
+            return 1
+        id_existente.sort()
+        id_prev = id_existente[0]
+        for id in id_existente:
+            if (id-id_prev > 1):
+                return id_prev+1
+
+    def __len__(self):
+        return len(self.__note)

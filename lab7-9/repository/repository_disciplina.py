@@ -15,21 +15,20 @@ class RepoDisciplina:
         id_disciplina = disciplina.get_id_disciplina()
 
         if id_disciplina in self.__disciplina:
-            raise EroareRepo("Id exista deja!\n")
+            raise EroareRepo("Id disciplina exista deja!\n")
 
         self.__disciplina[id_disciplina] = disciplina
-        print(f"Am adaugat disciplina cu succes cu id {id_disciplina}")
 
-    def stergere_disciplina(self, disciplina: Disciplina):
+        return id_disciplina
+
+    def stergere_disciplina(self, id_disciplina: int):
         '''
         functie care sterge disciplina din repo
         :parem disciplina -> disciplina
         :return -
         '''
-        id_disciplina = disciplina.get_id_disciplina()
-
         if id_disciplina not in self.__disciplina:
-            raise EroareRepo("Id nu exista!\n")
+            raise EroareRepo("Id disciplina nu exista!\n")
 
         del self.__disciplina[id_disciplina]
 
@@ -43,7 +42,17 @@ class RepoDisciplina:
         id_disciplina = disciplina.get_id_disciplina()
 
         if id_disciplina not in self.__disciplina:
-            raise EroareRepo("Id nu exista!\n")
+            raise EroareRepo("Id disciplina nu exista!\n")
+
+        self.__disciplina[id_disciplina] = disciplina
+
+    def cauta_disciplina(self, id_disciplina: int):
+        '''
+        cauta disciplina cu idul dat
+        :parem id_disciplina -> idul disciplinei
+        :return disciplina sau None daca nu exista
+        '''
+        return self.__disciplina.get(id_disciplina)
 
     def get_all_disciplina(self):
         return list(self.__disciplina.values())

@@ -20,7 +20,7 @@ repo_nota = RepoNote()
 
 service_studenti = ServiceStudenti(repo_student)
 service_discipline = ServiceDisciplina(repo_disciplina)
-service_note = ServiceNote()
+service_note = ServiceNote(repo_disciplina, repo_student, repo_nota)
 
 UI = Consola(service_studenti, service_note, service_discipline)
 

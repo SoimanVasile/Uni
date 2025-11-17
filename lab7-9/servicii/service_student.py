@@ -1,6 +1,5 @@
 from domeniu.student import Student
 from repository.repositoryStudent import RepoStudent
-from exceptii.EroareRepo import EroareRepo
 # from validare.validare_student import EroareValidare
 
 
@@ -14,10 +13,7 @@ class ServiceStudenti:
         :parem student -> Student
         :return -
         '''
-        try:
-            self.__repo_student.adaugare_student_repo(student)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
+        self.__repo_student.adaugare_student_repo(student)
 
     def afiseaza_studentii(self):
         '''
@@ -26,16 +22,15 @@ class ServiceStudenti:
         '''
         return (self.__repo_student.get_all_studenti())
 
-    def stergere_student(self, student: Student):
+    def stergere_student(self, id_student: int):
         '''
         sterge un student din repo
         ;parem student -> Student
         :return -
         '''
-        try:
-            self.__repo_student.stergere_student(student)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
+        id_student = self.__repo_student.stergere_student(id_student)
+
+        return id_student
 
     def update_student(self, student: Student):
         '''
@@ -43,11 +38,7 @@ class ServiceStudenti:
         :parem studen -> Student
         :return -
         '''
-        try:
-            self.__repo_student.update_student(student)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
-        print("Am actualizat cu succes")
+        self.__repo_student.update_student(student)
 
     def creare_id_student(self):
         '''
@@ -55,3 +46,13 @@ class ServiceStudenti:
         return cel mai mic id nefolosit
         '''
         return self.__repo_student.creare_id_student()
+
+    def cautare_student(self, id_student: int):
+        '''
+        cauta studentul cu idul respectiv
+        :parem id_student -> idul studentului
+        :return studentul cu idul respectiv
+        '''
+        id_student = self.__repo_student.cautare_student(id_student)
+
+        return id_student

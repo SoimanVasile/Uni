@@ -1,6 +1,5 @@
 from repository.repository_disciplina import RepoDisciplina
 from domeniu.disciplina import Disciplina
-from exceptii.EroareRepo import EroareRepo
 
 
 class ServiceDisciplina:
@@ -14,23 +13,15 @@ class ServiceDisciplina:
         :parem disciplina -> disciplina
         :return -
         '''
-        try:
-            self.__repo_disciplina.adaugare_disciplina(disciplina)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
+        return self.__repo_disciplina.adaugare_disciplina(disciplina)
 
-    def sterge_disciplina(self, disciplina: Disciplina):
+    def sterge_disciplina(self, id_disciplina: int):
         '''
         sterge o disciplina din repo
         :parem disciplina -> disciplina
         :return -
         '''
-        try:
-            self.__repo_disciplina.stergere_disciplina(disciplina)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
-
-        print("Am sters cu succes disciplina")
+        self.__repo_disciplina.stergere_disciplina(id_disciplina)
 
     def update_disciplina(self, disciplina: Disciplina):
         '''
@@ -38,19 +29,14 @@ class ServiceDisciplina:
         :param disciplina -> Disciplina
         :return -
         '''
-        try:
-            self.__repo_disciplina.update_disciplina(disciplina)
-        except EroareRepo as eroare:
-            print("EroareRepo>>", eroare)
-
-        print("Am actualizat cu succes disciplina")
+        self.__repo_disciplina.update_disciplina(disciplina)
 
     def afiseaza_discipline(self):
         '''
         afiseaza toate disciplinele
         :return -
         '''
-        print(self.__repo_disciplina.get_all_disciplina())
+        return self.__repo_disciplina.get_all_disciplina()
 
     def creeare_id_disciplina(self):
         '''
@@ -58,3 +44,11 @@ class ServiceDisciplina:
         :return cel mai mic id nefolosit
         '''
         return self.__repo_disciplina.creare_id_disciplina()
+
+    def cautare_disciplina(self, id_disciplina):
+        '''
+        cauta disciplina cu idul dat
+        :parem id_student -> idul studentului
+        :return disciplina sau None daca nu exista
+        '''
+        return self.__repo_disciplina.cauta_disciplina(id_disciplina)

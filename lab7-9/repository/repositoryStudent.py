@@ -30,25 +30,23 @@ class RepoStudent:
         id_student = student.get_id_student()
 
         if id_student in self.__studenti:
-            raise EroareRepo("Id exista deja!\n")
+            raise EroareRepo("Id student exista deja!\n")
 
         self.__studenti[id_student] = student
-        print(f"Student adaugat cu id ul {id_student}")
 
-    def stergere_student(self, student: Student):
+        return id_student
+
+    def stergere_student(self, id_student: int):
         '''
         functie care sterge un student din repo
         :parem student -> student
         :return -
         '''
 
-        id_student = student.get_id_student()
-
         if id_student not in self.__studenti:
-            raise EroareRepo("Id nu exista!\n")
+            raise EroareRepo("Id student nu exista!\n")
 
         del self.__studenti[id_student]
-        print("Am sters cu succes studentul")
 
     def update_student(self, student: Student):
         '''
@@ -60,7 +58,7 @@ class RepoStudent:
         id_student = student.get_id_student()
 
         if id_student not in self.__studenti:
-            raise EroareRepo("Id nu exista!\n")
+            raise EroareRepo("Id student nu exista!\n")
 
         self.__studenti[id_student] = student
 
@@ -70,6 +68,14 @@ class RepoStudent:
         :return lista de studenti
         '''
         return list(self.__studenti.values())
+
+    def cautare_student(self, id_student: int):
+        '''
+        returneaza studentul cu idul respectiv
+        :parem id_student -> idul studentului
+        :return studentul cu idul respectiv
+        '''
+        return self.__studenti.get(id_student)
 
     def __len__(self):
         return len(self.__studenti)

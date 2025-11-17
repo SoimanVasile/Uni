@@ -1,11 +1,13 @@
 from domeniu.student import Student
 from domeniu.disciplina import Disciplina
+from domeniu.note import Note
 
 from servicii.service_student import ServiceStudenti
 from servicii.service_note import ServiceNote
 from servicii.service_disciplina import ServiceDisciplina
 
 from exceptii.EroareUI import EroareUI
+from exceptii.EroareRepo import EroareRepo
 
 
 class Consola:
@@ -17,12 +19,15 @@ class Consola:
         self.__comenzi = {
             "adauga_student": [self.ui_adauga_student, 1, [str]],
             "afiseaza_studenti": [self.ui_afiseaza_student, 0, []],
-            "sterge_student": [self.ui_sterge_student, 2, [int, str]],
+            "sterge_student": [self.ui_sterge_student, 1, [int]],
             "update_student": [self.ui_update_student, 2, [int, str]],
             "adauga_disciplina": [self.ui_adauga_disciplina, 2, [str, str]],
-            "sterge_disciplina": [self.ui_sterge_disciplina, 3, [int, str, str]],
+            "sterge_disciplina": [self.ui_sterge_disciplina, 1, [int]],
             "afiseaza_disciplina": [self.ui_afisare_discipline, 0, []],
             "update_disciplina": [self.ui_update_disciplina, 3, [int, str, str]],
+            "cauta_student": [self.ui_cauta_student, 1, [int]],
+            "cauta_disciplina": [self.ui_cauta_disciplina, 1, [int]],
+            "adaugare_nota": [self.ui_adauga_nota, 3, [int, int, int]],
         }
 
     def run(self):
@@ -76,7 +81,7 @@ class Consola:
         :parem comanda -> comanda
         :parem parametri_comanda -> parametrii comenzii
         :return -
-            raise eroare daca numarul de parametrii sunt gresit sau tipul parametrilor sunt gresit
+        raise eroare daca numarul de parametrii sunt gresit sau tipul parametrilor sunt gresit
         '''
         numarul_parametri_comanda = self.__comenzi[comanda][1]
 
@@ -92,7 +97,7 @@ class Consola:
             try:
                 parametru = instanta_buna(parametru)
                 parametri_comanda[i] = parametru
-            except:
+            except ValueError:
                 erori += f"Parametrul {i+1} nu este de tipul {instanta_buna}"
 
         if len(erori) != 0:
@@ -110,7 +115,13 @@ class Consola:
         nume_student = parametri_comanda[0]
         id_student = self.__service_studenti.creare_id_student()
         student = Student(id_student, nume_student)
-        self.__service_studenti.adauga_student(student)
+        try:
+            self.__service_studenti.adauga_student(student)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print(f"Am adaugat cu succes studentul cu id {id_student}")
 
     def ui_afiseaza_student(self, parametri_comanda):
         '''
@@ -127,10 +138,14 @@ class Consola:
         :return -
         '''
         id_student = parametri_comanda[0]
-        nume = parametri_comanda[1]
-        student = Student(id_student, nume)
 
-        self.__service_studenti.stergere_student(student)
+        try:
+            self.__service_studenti.stergere_student(id_student)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print("Am sters cu succes studentul")
 
     def ui_update_student(self, parametri_comanda):
         '''
@@ -142,7 +157,13 @@ class Consola:
         nume = parametri_comanda[1]
         student = Student(id_student, nume)
 
-        self.__service_studenti.update_student(student)
+        try:
+            self.__service_studenti.update_student(student)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print("Am actualizat cu succes studentul")
 
     def ui_adauga_disciplina(self, parametri_comanda):
         '''
@@ -155,7 +176,14 @@ class Consola:
         nume_profesor = parametri_comanda[1]
         disciplina = Disciplina(id_disciplina, nume_disciplina, nume_profesor)
 
-        self.__service_disciplina.adauga_disciplina(disciplina)
+        try:
+            self.__service_disciplina.adauga_disciplina(disciplina)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print(f"Am adaugat disciplina cu succes disciplina cu id {
+              id_disciplina}")
 
     def ui_sterge_disciplina(self, parametri_comanda):
         '''
@@ -163,11 +191,14 @@ class Consola:
         :parem parametri_comanda -> parametrii comenzii
         '''
         id_disciplina = parametri_comanda[0]
-        nume_disciplina = parametri_comanda[1]
-        nume_profesor = parametri_comanda[2]
-        disciplina = Disciplina(id_disciplina, nume_disciplina, nume_profesor)
 
-        self.__service_disciplina.sterge_disciplina(disciplina)
+        try:
+            self.__service_disciplina.sterge_disciplina(id_disciplina)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print("Am sters cu succes disciplina")
 
     def ui_afisare_discipline(self, parametri_comanda):
         '''
@@ -175,7 +206,7 @@ class Consola:
         :parem parametrii comanda -> parametrii comenzii
         :return -
         '''
-        self.__service_disciplina.afiseaza_discipline()
+        print(self.__service_disciplina.afiseaza_discipline())
 
     def ui_update_disciplina(self, parametri_comanda):
         '''
@@ -187,4 +218,59 @@ class Consola:
         nume_profesor = parametri_comanda[2]
 
         disciplina = Disciplina(id_disciplina, nume_disciplina, nume_profesor)
-        self.__service_disciplina.update_disciplina(disciplina)
+        try:
+            self.__service_disciplina.update_disciplina(disciplina)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print("Am actualizat cu succes disciplina")
+
+    def ui_cauta_student(self, parametri_comanda):
+        '''
+        cauta studentul cu idul dat
+        :parem parametri_comanda -> parametrii comenzii
+        :return -
+            printeaza studentul sau raiseEroareRepo
+        '''
+        id_student = parametri_comanda[0]
+        student = self.__service_studenti.cautare_student(id_student)
+        if student is None:
+            print("Studentul nu exista!")
+        else:
+            print(f"{student}")
+
+    def ui_cauta_disciplina(self, parametri_comanda):
+        '''
+        cauta disciplina cu idul data
+        :parem parametri_comanda -> parametrii comenzii
+        :return -
+            printeaza disciplina sau raiseEroareRepo
+        '''
+        id_disciplina = parametri_comanda[0]
+
+        disciplina = self.__service_disciplina.cautare_disciplina(
+            id_disciplina)
+
+        if disciplina is None:
+            print("Nu exista disciplina")
+        else:
+            print(disciplina)
+
+    def ui_adauga_nota(self, paramaetri_comanda):
+        '''
+        adauga nota in repo
+        '''
+        id_student = paramaetri_comanda[0]
+        id_disciplina = paramaetri_comanda[1]
+        valoare = paramaetri_comanda[2]
+
+        nota = Note(id_student, id_disciplina, valoare)
+
+        try:
+            self.__service_note.adauga_note(nota)
+        except EroareRepo as e:
+            print("EroareRepo>> ", e)
+            return
+
+        print("Am adaugat nota cu succes")
