@@ -1,3 +1,6 @@
+import random
+import string
+
 from exceptii.EroareValidare import EroareValidare
 from exceptii.EroareRepo import EroareRepo
 from exceptii.EroareValidare import EroareValidare
@@ -177,6 +180,20 @@ class TestStudentService(unittest.TestCase):
         studenti = self.service.afiseaza_studentii()
         self.assertEqual(len(studenti), 1,
                          "Nu ar trebui adaugat un student cu ID duplicat.")
+
+    def test_adauga_student_rand(self):
+        """
+        adauga un student cu nume random
+        """
+        random.seed(1)
+        nume1 = self.service.creare_nume_rand()
+        self.assertEqual(nume1, "KZW")
+
+        nume2 = self.service.creare_nume_rand()
+        self.assertEqual(nume2, "qh")
+
+        nume3 = self.service.creare_nume_rand()
+        self.assertEqual(nume3, "WCEPyYng")
 
     def test_afiseaza_studentii(self):
         """

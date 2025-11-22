@@ -23,11 +23,15 @@ class Consola:
             "update_student": [self.ui_update_student, 2, [int, str]],
             "adauga_disciplina": [self.ui_adauga_disciplina, 2, [str, str]],
             "sterge_disciplina": [self.ui_sterge_disciplina, 1, [int]],
-            "afiseaza_disciplina": [self.ui_afisare_discipline, 0, []],
+            "afiseaza_discipline": [self.ui_afisare_discipline, 0, []],
             "update_disciplina": [self.ui_update_disciplina, 3, [int, str, str]],
             "cauta_student": [self.ui_cauta_student, 1, [int]],
             "cauta_disciplina": [self.ui_cauta_disciplina, 1, [int]],
             "adauga_nota": [self.ui_adauga_nota, 3, [int, int, float]],
+            "sterge_nota": [self.ui_sterge_nota, 1, [int]],
+            "update_nota": [self.ui_update_nota, 4, [int, int, int, float]],
+            "afiseaza_note": [self.ui_afiseaza_nota, 0, []],
+            "adauga_student_rand": [self.ui_adauga_student_rand, 0, []],
         }
 
     def run(self):
@@ -69,7 +73,7 @@ class Consola:
             "4. update_student {id_student} {nume} - actualizeaza studentul cu idul {id_student} schimband numele in {nume}")
         print(
             "5. adauga_disciplina {nume_disciplina} {nume_profesor} - adauga o disciplina noua in repo cu un id unic")
-        print("6. afiseaza_disciplina - afiseaza disciplinele")
+        print("6. afiseaza_discipline - afiseaza disciplinele")
         print(
             "7. sterge_disciplina {id_disciplina} {nume_disciplina} {nume_profesor} - sterge disciplina cu id ul dat")
         print(
@@ -80,6 +84,10 @@ class Consola:
             "10. cauta_disciplina {id_disciplina} - afiseaza disciplina cu idul respectiv")
         print(
             "11. adauga_nota {id_student} {id_disciplina} {nota_student} - adauga o nota la studentul dat la materia respectiva")
+        print("12. sterge_nota {id_nota} - sterge o nota din repo")
+        print(
+            "13. update_nota {id_nota} {id_student} {id_disciplina} {nota_student} - actualizeaza nota cu idul nota dat cu datele inserate")
+        print("14. afiseaza_note - afiseaza toate notele")
 
     def verificare_parametru(self, comanda, parametri_comanda):
         '''
@@ -152,6 +160,7 @@ class Consola:
             return
 
         print("Am sters cu succes studentul")
+        self.__service_note.sterge_nota_dupa_student(id_student)
 
     def ui_update_student(self, parametri_comanda):
         '''
@@ -205,6 +214,7 @@ class Consola:
             return
 
         print("Am sters cu succes disciplina")
+        self.__service_note.sterge_nota_dupa_disciplina(id_disciplina)
 
     def ui_afisare_discipline(self, parametri_comanda):
         '''
@@ -281,3 +291,60 @@ class Consola:
             return
 
         print(f"Am adaugat nota cu succes cu id {id_nota}")
+
+    def ui_sterge_nota(self, parametri_comanda):
+        """
+        sterge nota in repo
+        """
+        id_nota = parametri_comanda[0]
+
+        try:
+            self.__service_note.sterge_nota(id_nota)
+        except EroareRepo as e:
+            print("EroareRepo >>", e)
+            return
+
+        print("Am sters cu succes nota")
+
+    def ui_update_nota(self, parametri_comanda):
+        """
+        actualizeaza o nota in repo
+        """
+        id_nota = parametri_comanda[0]
+        id_student = parametri_comanda[1]
+        id_disciplina = parametri_comanda[2]
+        nota_student = parametri_comanda[3]
+
+        nota = Note(id_nota, id_student, id_disciplina, nota_student)
+
+        try:
+            self.__service_note.update_nota(nota)
+        except EroareRepo as e:
+            print("EroareRepo >>", e)
+            return
+
+        print("Am actualizat cu succes")
+
+    def ui_afiseaza_nota(self, parametri_comanda):
+        """
+        afiseaza toate notele
+        """
+        print(self.__service_note.afiseaza_note())
+
+    def ui_adauga_student_rand(self, parametri_comanda):
+        """
+        adauga un student nou cu nume random
+        """
+        id_student = self.__service_studenti.creare_id_student()
+        nume = self.__service_studenti.creare_nume_rand()
+
+        student = Student(id_student, nume)
+
+        try:
+            self.__service_studenti.adauga_student(student)
+        except EroareRepo as e:
+            print("EroareRepo >>", e)
+            return
+
+        print(f"Am adauga cu succes studentu cu id {
+              id_student} si nume {nume}")

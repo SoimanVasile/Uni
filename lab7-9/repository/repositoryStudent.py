@@ -12,12 +12,14 @@ class RepoStudent:
         if len(id_existente) == 0:
             return 1
         id_existente.sort()
-        id_prev = id_existente[0]
+        id_expected = 1
         for id in id_existente:
-            if (id-id_prev > 1):
-                return id_prev+1
+            if id_expected != id:
+                return id_expected
 
-        return len(id_existente)+1
+            id_expected += 1
+
+        return id_expected
 
     def adaugare_student_repo(self, student: Student):
         '''

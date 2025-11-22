@@ -28,13 +28,18 @@ class ServiceNote:
         id_disciplina = nota.get_id_disciplina()
 
         erori = ""
+        id_nota = nota.get_id_nota()
+        nota_cautata = self.__repo_nota.cauta_nota(id_nota)
+        if nota_cautata is not None:
+            erori += "id nota exista deja!\n"
+
         student = self.__repo_student.cautare_student(id_student)
         if student is None:
             erori += "id student nu exista!\n"
 
         disciplina = self.__repo_disciplina.cauta_disciplina(id_disciplina)
         if disciplina is None:
-            erori += "id student nu exista!\n"
+            erori += "id disciplina nu exista!\n"
 
         if len(erori) != 0:
             raise EroareRepo(erori)
@@ -48,12 +53,39 @@ class ServiceNote:
         """
         self.__repo_nota.sterge_nota(id_nota)
 
-    def update_nota(self, nota: int):
+    def update_nota(self, nota: Note):
         """
         actualizeaza o nota din repo
         :parem nota-> nota
         """
+
         self.__repo_nota.update_nota(nota)
+
+    def afiseaza_note(self):
+        """
+        afiseaza notele
+        """
+        return self.__repo_nota.get_all()
+
+    def sterge_nota_dupa_student(self, id_student: int):
+        """
+        sterge notele dupa student
+        """
+        for nota in self.__repo_nota.get_all():
+            id_student_nota = nota.get_id_student()
+            id_nota = nota.get_id_nota()
+            if id_student_nota == id_student:
+                self.__repo_nota.sterge_nota(id_nota)
+
+    def sterge_nota_dupa_disciplina(self, id_disciplina: int):
+        """
+        sterge notele dupa disiplina
+        """
+        for nota in self.__repo_nota.get_all():
+            id_disciplina_nota = nota.get_id_disciplina()
+            id_nota = nota.get_id_nota()
+            if id_disciplina_nota == id_disciplina:
+                self.__repo_nota.sterge_nota(id_nota)
 
     def creare_id_nota(self):
         return self.__repo_nota.creare_id_nota()

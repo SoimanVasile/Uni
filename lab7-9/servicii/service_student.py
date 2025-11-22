@@ -1,5 +1,7 @@
 from domeniu.student import Student
 from repository.repositoryStudent import RepoStudent
+import random
+import string
 # from validare.validare_student import EroareValidare
 
 
@@ -14,6 +16,21 @@ class ServiceStudenti:
         :return -
         '''
         self.__repo_student.adaugare_student_repo(student)
+
+    def creare_nume_rand(self):
+        length = self.generate_length()
+        charset = string.ascii_letters
+        name = ""
+
+        for _ in range(length):
+            random_char = random.choice(charset)
+            name += random_char
+
+        return name
+
+    def generate_length(self):
+        length = random.randint(1, 15)
+        return length
 
     def afiseaza_studentii(self):
         '''

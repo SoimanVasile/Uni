@@ -46,6 +46,8 @@ class RepoNote:
         if id_nota not in self.__note.keys():
             raise EroareRepo("id nu exista!\n")
 
+        erori = ""
+
         self.__note[id_nota] = nota
 
     def get_all(self):
@@ -55,15 +57,26 @@ class RepoNote:
         '''
         return list(self.__note.values())
 
+    def cauta_nota(self, id_nota: int):
+        """
+        cauta nota cu idul dat
+        """
+        nota = self.__note.get(id_nota)
+        return nota
+
     def creare_id_nota(self):
         id_existente = list(self.__note.keys())
         if len(id_existente) == 0:
             return 1
         id_existente.sort()
-        id_prev = id_existente[0]
+        id_expected = 1
         for id in id_existente:
-            if (id-id_prev > 1):
-                return id_prev+1
+            if id_expected != id:
+                return id_expected
+
+            id_expected += 1
+
+        return id_expected
 
     def __len__(self):
         return len(self.__note)
