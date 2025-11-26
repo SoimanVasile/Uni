@@ -14,4 +14,4 @@ class Student:
         self.__nume = nume
 
     def __repr__(self):
-        return f"{self.__id_student}: {self.__nume}"
+        return f"[id_student: {self.__id_student}, nume_student: {self.__nume}]"

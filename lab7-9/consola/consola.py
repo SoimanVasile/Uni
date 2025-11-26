@@ -8,6 +8,7 @@ from servicii.service_disciplina import ServiceDisciplina
 
 from exceptii.EroareUI import EroareUI
 from exceptii.EroareRepo import EroareRepo
+from exceptii.EroareValidare import EroareValidare
 
 
 class Consola:
@@ -32,6 +33,8 @@ class Consola:
             "update_nota": [self.ui_update_nota, 4, [int, int, int, float]],
             "afiseaza_note": [self.ui_afiseaza_nota, 0, []],
             "adauga_student_rand": [self.ui_adauga_student_rand, 0, []],
+            "lista_studenti": [self.ui_lista_studenti, 1, [int]],
+            "top_studenti": [self.ui_top_studenti, 0, []],
         }
 
     def run(self):
@@ -88,6 +91,10 @@ class Consola:
         print(
             "13. update_nota {id_nota} {id_student} {id_disciplina} {nota_student} - actualizeaza nota cu idul nota dat cu datele inserate")
         print("14. afiseaza_note - afiseaza toate notele")
+        print("15. adauga_student_rand - adauga un student nou cu nume random")
+        print(
+            "16. lista_studenti {id_disciplina} - afiseaza lista studentilor ordonati alfabetic si dupa nota de la disciplina data")
+        print("17. top studenti - afiseaza primi 20% din studenti dupa medie")
 
     def verificare_parametru(self, comanda, parametri_comanda):
         '''
@@ -289,6 +296,9 @@ class Consola:
         except EroareRepo as e:
             print("EroareRepo>> ", e)
             return
+        except EroareValidare as e:
+            print("EroareValidare>> ", e)
+            return
 
         print(f"Am adaugat nota cu succes cu id {id_nota}")
 
@@ -348,3 +358,18 @@ class Consola:
 
         print(f"Am adauga cu succes studentu cu id {
               id_student} si nume {nume}")
+
+    def ui_lista_studenti(self, parametri_comanda):
+        """
+        afiseaza sortat studentii dupa nume si nota
+        """
+        id_disciplina = parametri_comanda[0]
+        print(self.__service_note.lista_studenti_sortata_dupa_disciplina(id_disciplina))
+
+    def ui_top_studenti(self, parametri_comanda):
+        """
+        afiseaza primit 20% din studenti cu cea mai mare medie
+        """
+        rezultat = self.__service_note.top_studenti()
+        for student in rezultat:
+            print(f"{student[0]} are media {student[1]}")

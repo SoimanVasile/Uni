@@ -1,3 +1,4 @@
+import math
 from domeniu.disciplina import Disciplina
 from domeniu.note import Note
 from domeniu.student import Student
@@ -89,3 +90,114 @@ class ServiceNote:
 
     def creare_id_nota(self):
         return self.__repo_nota.creare_id_nota()
+
+    def get_toate_note_student_dupa_materie(self, id_student: int, id_disciplina: int):
+        """
+        da toate notele pe care le are studentul la o materie data
+        """
+        lista_note = self.__repo_nota.get_all()
+        notele_studentului = []
+        for nota in lista_note:
+            id_disciplina_nota = nota.get_id_disciplina()
+            id_student_nota = nota.get_id_student()
+            if (id_disciplina == id_disciplina_nota) and (id_student == id_student_nota):
+                notele_studentului.append(nota.get_nota_student())
+
+        notele_studentului.sort()
+        return notele_studentului
+
+    def media_la_student(self, id_student: int):
+        """
+        calculeaza media unui student
+        """
+        lista_disciplina = self.__repo_disciplina.get_all_disciplina()
+        cnt = 0
+        sum = 0
+        for disciplina in lista_disciplina:
+            id_disciplina = disciplina.get_id_disciplina()
+            lista_nota_din_disciplina = self.get_toate_note_student_dupa_materie(
+                id_student, id_disciplina)
+            if lista_nota_din_disciplina != []:
+                sum += self.media(lista_nota_din_disciplina)
+                cnt += 1
+
+        if cnt != 0:
+            return sum/cnt
+        else:
+            return
+
+    def media(self, note: list):
+        """
+        calculeaza media unei liste
+        """
+        cnt = 0
+        sum = 0
+        for nota in note:
+            sum += nota
+            cnt += 1
+
+        return sum/cnt
+
+    def statistica_note_la_disciplina(self, id_disciplina: Disciplina):
+        """
+        iau lista de studenti si note si filtrezi notele dupa disciplina
+        """
+        lista_studenti = self.__repo_student.get_all_studenti()
+        rezultat = []
+
+        for student in lista_studenti:
+            id_student = student.get_id_student()
+            dto = {
+                "student": student,
+                "nota": self.get_toate_note_student_dupa_materie(id_student, id_disciplina)
+            }
+            rezultat.append(dto)
+
+        return rezultat
+
+    def lista_studenti_sortata_dupa_disciplina(self, id_disciplina: Disciplina):
+        """
+        lista de studenti ordonati dupa nume si notele pe care le au la disciplinile date
+        """
+        lista_studenti = self.statistica_note_la_disciplina(id_disciplina)
+        lista_studenti.sort(key=lambda x: (
+            x["student"].get_nume(), [n for n in x["nota"]]))
+
+        return lista_studenti
+
+    def lista_de_medie_studenti(self, lista_studenti: list):
+        """
+        face media la toti studenti
+        """
+        rezultat = []
+        for student in lista_studenti:
+            id_student = student.get_id_student()
+            media_student = self.media_la_student(id_student)
+            if media_student is not None:
+                dto = {
+                    "media": media_student,
+                    "student": student
+                }
+                rezultat.append(dto)
+
+        return rezultat
+
+    def top_studenti(self):
+        """
+        top 20% studenti dupa medie
+        """
+        lista_studenti = self.__repo_student.get_all_studenti()
+        lista_studenti_dupa_medie = list(self.lista_de_medie_studenti(
+            lista_studenti))
+
+        rezultat = []
+        for i in range(len(lista_studenti_dupa_medie)):
+            student = lista_studenti_dupa_medie[i]["student"]
+            medie = lista_studenti_dupa_medie[i]["media"]
+            rezultat.append([student.get_nume(), medie])
+
+        rezultat.sort(key=lambda x: (x[1]), reverse=True)
+
+        rezultat = rezultat[:math.ceil(len(lista_studenti_dupa_medie)/5)]
+
+        return rezultat

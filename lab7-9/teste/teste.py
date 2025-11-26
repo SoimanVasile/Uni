@@ -20,10 +20,10 @@ from domeniu.disciplina import Disciplina
 from domeniu.student import Student
 
 import unittest
-import sys
-import os
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, project_root)
+# import sys
+# import os
+# project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# sys.path.insert(0, project_root)
 
 
 class TestStudentRepo(unittest.TestCase):
@@ -597,6 +597,145 @@ class TestNoteService (unittest.TestCase):
 
         note = self.repo_note.get_all()
         self.assertLess(abs(note[0].get_nota_student()-6.23), 0.000001)
+
+
+class TestStatisticiNoi(unittest.TestCase):
+    def setUp(self):
+        # Configurare infrastructura (Repo + Service)
+        self.repo_student = RepoStudent()
+        self.repo_disciplina = RepoDisciplina()
+        self.repo_nota = RepoNote()
+        self.validare_nota = ValidareNota()
+
+        self.service = ServiceNote(
+            self.repo_disciplina,
+            self.repo_student,
+            self.repo_nota,
+            self.validare_nota
+        )
+        # 10 studenti
+        nume_studenti = [
+            "Popescu Ion",      # ID 1
+            "Albu Ana",         # ID 2
+            "Popescu Ion",      # ID 3 (Același nume ca ID 1)
+            "Barbu Matei",      # ID 4
+            "Costea George",    # ID 5
+            "Zaharia Maria",    # ID 6
+            "Albu Ana",         # ID 7 (Același nume ca ID 2)
+            "Dinu Cornel",      # ID 8
+            "Enache Elena",     # ID 9
+            "Faur Dan"          # ID 10
+        ]
+
+        for i in range(len(nume_studenti)):
+            s = Student(i + 1, nume_studenti[i])
+            self.repo_student.adaugare_student_repo(s)
+
+        # 1 Disciplină
+        disciplina = Disciplina(100, "Informatica", "Prof. X")
+        self.repo_disciplina.adaugare_disciplina(disciplina)
+
+    def test_lista_studenti_sortata_dupa_disciplina(self):
+        """
+        Testează sortarea pentru 10 studenți.
+        Criteriu sortare: 1. Nume (Alfabetic), 2. Notă (Crescător)
+        """
+
+        # Asignăm note studenților la disciplina 100
+        # Format: (id_student, nota)
+        note_asignate = [
+            (1, 8.50),  # Popescu Ion (8.50)
+            (2, 9.00),  # Albu Ana (9.00)
+            # Popescu Ion (7.00) -> Trebuie să apară ÎNAINTEA lui ID 1 (7.00 < 8.50)
+            (3, 7.00),
+            (4, 10.00),  # Barbu Matei
+            (5, 5.00),  # Costea George
+            (6, 9.50),  # Zaharia Maria
+            # Albu Ana (6.00) -> Trebuie să apară ÎNAINTEA lui ID 2 (6.00 < 9.00)
+            (7, 6.00),
+            (8, 4.50),  # Dinu Cornel
+            (9, 8.00),  # Enache Elena
+            (10, 7.50)  # Faur Dan
+        ]
+
+        # Adăugăm notele în repo
+        id_nota_start = 1000
+        for id_student, valoare_nota in note_asignate:
+            nota = Note(id_nota_start, id_student, 100, valoare_nota)
+            self.repo_nota.adauga_nota(nota)
+            id_nota_start += 1
+
+        # Apelăm funcția de sortare
+        rezultat = self.service.lista_studenti_sortata_dupa_disciplina(100)
+
+        # Verificăm că avem 10 rezultate
+        self.assertEqual(len(rezultat), 10)
+
+        # Construim ordinea așteptată manual pentru verificare
+        # Ordine: Nume ASC, apoi Nota ASC
+
+        # 1. Albu Ana (ID 7, Nota 6.00)
+        self.assertEqual(rezultat[0]["student"].get_nume(), "Albu Ana")
+        self.assertEqual(rezultat[0]["nota"], [6.00])
+
+        # 2. Albu Ana (ID 2, Nota 9.00)
+        self.assertEqual(rezultat[1]["student"].get_nume(), "Albu Ana")
+        self.assertEqual(rezultat[1]["nota"], [9.00])
+
+        # 3. Barbu Matei (ID 4, Nota 10.00)
+        self.assertEqual(rezultat[2]["student"].get_nume(), "Barbu Matei")
+
+        # 4. Costea George (ID 5, Nota 5.00)
+        self.assertEqual(rezultat[3]["student"].get_nume(), "Costea George")
+
+        # 5. Dinu Cornel (ID 8, Nota 4.50)
+        self.assertEqual(rezultat[4]["student"].get_nume(), "Dinu Cornel")
+
+        # 6. Enache Elena (ID 9, Nota 8.00)
+        self.assertEqual(rezultat[5]["student"].get_nume(), "Enache Elena")
+
+        # 7. Faur Dan (ID 10, Nota 7.50)
+        self.assertEqual(rezultat[6]["student"].get_nume(), "Faur Dan")
+
+        # 8. Popescu Ion (ID 3, Nota 7.00) - Nota mai mică primul
+        self.assertEqual(rezultat[7]["student"].get_nume(), "Popescu Ion")
+        self.assertEqual(rezultat[7]["nota"], [7.00])
+
+        # 9. Popescu Ion (ID 1, Nota 8.50)
+        self.assertEqual(rezultat[8]["student"].get_nume(), "Popescu Ion")
+        self.assertEqual(rezultat[8]["nota"], [8.50])
+
+        # 10. Zaharia Maria (ID 6, Nota 9.50)
+        self.assertEqual(rezultat[9]["student"].get_nume(), "Zaharia Maria")
+
+    def test_top_studenti(self):
+        """
+        testeaza functia top_studenti din service
+        """
+        note_asignate = [
+            (1, 8.5),
+            (1, 9.0),
+            (2, 5.6),
+            (2, 10.0),
+            (2, 10.0),
+            (3, 8.34),
+            (4, 9.12),
+            (4, 9.87),
+            (5, 9.80),
+            (5, 9.05),
+        ]
+
+        id_nota_start = 1000
+        for id_student, valoare_nota in note_asignate:
+            nota = Note(id_nota_start, id_student, 100, valoare_nota)
+            self.repo_nota.adauga_nota(nota)
+            id_nota_start += 1
+
+        rezultat = self.service.top_studenti()
+
+        self.assertEqual(len(rezultat), 1)
+
+        self.assertEqual(rezultat[0][0], "Barbu Matei")
 
 
 if __name__ == '__main__':
