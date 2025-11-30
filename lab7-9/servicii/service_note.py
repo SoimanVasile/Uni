@@ -201,3 +201,99 @@ class ServiceNote:
         rezultat = rezultat[:math.ceil(len(lista_studenti_dupa_medie)/5)]
 
         return rezultat
+
+    def nr_nota_la_student(self):
+        """
+        calculeaza nr de note la fiecare student
+        """
+        lista_sudenti = self.__repo_student.get_all_studenti()
+        lista_note = self.__repo_nota.get_all()
+        numaru_de_note = []
+        for student in lista_sudenti:
+            id_student = student.get_id_student()
+            nr_de_note = 0
+            for nota in lista_note:
+                if nota.get_id_student() == id_student:
+                    nr_de_note += 1
+            dto = {
+                "id_student": id_student,
+                "nr_de_note": nr_de_note,
+            }
+            numaru_de_note.append(dto)
+
+        return numaru_de_note
+
+    def top_nr_nota_la_student(self, numaru_de_studenti: int):
+        """
+        lista cu primii studenti
+        """
+        lista_nr_note_studenti = self.nr_nota_la_student()
+        lista_nr_note_studenti.sort(
+            key=lambda x: x["nr_de_note"], reverse=True)
+        return lista_nr_note_studenti[:numaru_de_studenti]
+
+    def nr_nota_la_disciplina(self):
+        """
+        calculeaza nr de note la fiecare student
+        """
+        lista_disciplina = self.__repo_disciplina.get_all_disciplina()
+        lista_note = self.__repo_nota.get_all()
+        numaru_de_note = []
+        for disciplina in lista_disciplina:
+            id_disciplina = disciplina.get_id_disciplina()
+            nr_de_note = 0
+            for nota in lista_note:
+                if nota.get_id_disciplina() == id_disciplina:
+                    nr_de_note += 1
+
+            dto = {
+                "id_disciplina": id_disciplina,
+                "nr_de_note": nr_de_note
+            }
+            numaru_de_note.append(dto)
+
+        return numaru_de_note
+
+    def top_nr_nota_la_disciplina(self, numaru_de_discipline: int):
+        """
+        lista cu primii studenti
+        """
+        lista_nr_note_disciplina = self.nr_nota_la_disciplina()
+        lista_nr_note_disciplina.sort(
+            key=lambda x: x["nr_de_note"], reverse=True)
+        return lista_nr_note_disciplina[: numaru_de_discipline]
+
+    def verifica_daca_student_disciplina_au_legatura(self, id_student: int, id_disciplina: int):
+        """
+        verifica daca un student are legatura cu disciplina data
+        """
+        lista_note = self.__repo_nota.get_all()
+        for nota in lista_note:
+            id_student_nota = nota.get_id_student()
+            id_disciplina_nota = nota.get_id_disciplina()
+            if (id_student == id_student_nota) and (id_disciplina == id_disciplina_nota):
+                return True
+
+        return False
+
+    def top_studenti_disciplina_leg(self, numaru_de_obiecte):
+        """
+        afiseaza studenti cu cele mai multe legaturi daca au legaturi cu disciplinele care au celel mai multe legaturi
+        """
+        lista_top_studenti = self.top_nr_nota_la_student(numaru_de_obiecte)
+        lista_top_disciplina = self.top_nr_nota_la_disciplina(
+            numaru_de_obiecte)
+
+        rezultat = []
+        for student in lista_top_studenti:
+            id_student = student["id_student"]
+            for disciplina in lista_top_disciplina:
+                id_disciplina = disciplina["id_disciplina"]
+                if self.verifica_daca_student_disciplina_au_legatura(id_student, id_disciplina) == True:
+                    student_gasit = self.__repo_student.cautare_student(
+                        id_student)
+                    disciplina_gasita = self.__repo_disciplina.cauta_disciplina(
+                        id_disciplina)
+                    rezultat.append([student_gasit, disciplina_gasita])
+
+        return rezultat

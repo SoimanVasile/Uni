@@ -723,6 +723,7 @@ class TestStatisticiNoi(unittest.TestCase):
             (4, 9.87),
             (5, 9.80),
             (5, 9.05),
+            (6, 10.0),
         ]
 
         id_nota_start = 1000
@@ -733,9 +734,107 @@ class TestStatisticiNoi(unittest.TestCase):
 
         rezultat = self.service.top_studenti()
 
-        self.assertEqual(len(rezultat), 1)
+        self.assertEqual(len(rezultat), 2)
 
-        self.assertEqual(rezultat[0][0], "Barbu Matei")
+        self.assertEqual(rezultat[1][0], "Barbu Matei")
+        self.assertEqual(rezultat[0][0], "Zaharia Maria")
+
+    def test_top_nr_nota_la_student(self):
+        """
+        testeaza topu studenti dupa note
+        """
+        nr_studenti = 3
+        note_asignate = [
+            (1, 5.0),
+            (1, 5.0),
+            (2, 4.0),
+            (2, 4.0),
+            (2, 4.0),
+            (6, 6.0),
+            (6, 6.0),
+            (6, 6.0),
+            (6, 6.0),
+            (7, 6.0),
+        ]
+        id_nota_start = 1000
+        for id_student, valoarea_nota in note_asignate:
+            nota = Note(id_nota_start, id_student, 100, valoarea_nota)
+            self.repo_nota.adauga_nota(nota)
+            id_nota_start += 1
+
+        lista_studenti = self.service.top_nr_nota_la_student(nr_studenti)
+
+        student_prev = lista_studenti[0]["nr_de_note"]
+        for student in lista_studenti:
+            if (student["nr_de_note"] > student_prev):
+                assert False
+            student_prev = student["nr_de_note"]
+
+    def test_top_nr_nota_la_disciplina(self):
+        """
+        testeaza topu discipline dupa nota
+        """
+        nr_discipline = 3
+        discipline = [
+            Disciplina(101, "FP", "Istvan"),
+            Disciplina(102, "ASC", "Sotropa"),
+            Disciplina(103, "Algebra", "%2"),
+        ]
+        for disciplina in discipline:
+            self.repo_disciplina.adaugare_disciplina(disciplina)
+
+        note_asignate = [
+            (1, 100, 5.0),
+            (1, 100, 5.0),
+            (1, 100, 5.0),
+            (4, 101, 6.0),
+            (5, 102, 7.0),
+            (6, 103, 8.0),
+            (4, 101, 6.0),
+        ]
+        id_nota_start = 1000
+        for id_student, id_disciplina, valoare_nota in note_asignate:
+            nota = Note(id_nota_start, id_student, id_disciplina, valoare_nota)
+            self.repo_nota.adauga_nota(nota)
+            id_nota_start += 1
+
+        numaru_de_disciplina = 7
+        lista_nr_note_disciplina = self.service.top_nr_nota_la_disciplina(
+            numaru_de_disciplina)
+
+        disciplina_prev = lista_nr_note_disciplina[0]["nr_de_note"]
+        for disciplina in lista_nr_note_disciplina:
+            if disciplina["nr_de_note"] > disciplina_prev:
+                assert False
+
+            disciciplina_prev = disciplina["nr_de_note"]
+
+    def test_top_studenti_disciplina_leg(self):
+        """
+        testeaza daca returneaza lista de studenti si discipline care au leg
+        """
+        disciplina1 = Disciplina(101, "FP", "Istvan")
+        self.repo_disciplina.adaugare_disciplina(disciplina1)
+
+        note_asignate = [
+            (1, 100, 6.0),
+            (2, 101, 6.0),
+            (3, 101, 6.0),
+            (1, 101, 6.0),
+            (1, 100, 6.0),
+            (1, 101, 6.0),
+            (2, 101, 6.0),
+        ]
+        id_nota_start = 1000
+        for id_student, id_disciplina, valoare_nota in note_asignate:
+            nota = Note(id_nota_start, id_student, id_disciplina, valoare_nota)
+            self.repo_nota.adauga_nota(nota)
+            id_nota_start += 1
+        nr_obiecte = 3
+        lista_student_disciplina_leg = self.service.top_studenti_disciplina_leg(
+            3)
+
+        print(lista_student_disciplina_leg)
 
 
 if __name__ == '__main__':
