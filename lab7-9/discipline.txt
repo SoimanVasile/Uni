@@ -1,0 +1,4 @@
+1,analiza,Berinde
+2,FundamenteleProgramarii,Istvan
+4,Algebra,%2
+3,ASC,Sotropa

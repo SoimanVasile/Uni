@@ -23,3 +23,9 @@ class Note:
 
     def __repr__(self):
         return f"{self.__id_nota}: {self.__id_student}, {self.__id_disciplina}, {self.__nota_student}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Note):
+            return False
+
+        return self.__id_nota == other.__id_nota and self.__id_student == other.__id_student and self.__id_disciplina == other.__id_disciplina and self.__nota_student - other.__nota_student < 0.000001

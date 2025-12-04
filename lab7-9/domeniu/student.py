@@ -15,3 +15,9 @@ class Student:
 
     def __repr__(self):
         return f"[id_student: {self.__id_student}, nume_student: {self.__nume}]"
+
+    def __eq__ (self, other):
+        if not isinstance(other, Student):
+            return False
+
+        return self.__id_student == other.__id_student and self.__nume == other.__nume

@@ -22,3 +22,9 @@ class Disciplina:
 
     def __repr__(self):
         return f"{self.__id_disciplina}: {self.__nume_disciplina}, {self.__nume_profesor}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Disciplina):
+            return False
+
+        return self.__id_disciplina == other.__id_disciplina and self.__nume_profesor == other.__nume_profesor and self.__nume_disciplina == other.__nume_disciplina

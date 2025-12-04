@@ -1,5 +1,6 @@
 import random
 import string
+import os
 
 from exceptii.EroareValidare import EroareValidare
 from exceptii.EroareRepo import EroareRepo
@@ -36,7 +37,11 @@ class TestStudentRepo(unittest.TestCase):
         Se executa inainte de fiecare test.
         Initializeaza un repo de studenti gol.
         """
-        self.repo = RepoStudent()
+        self.file_name = "test_studenti.txt"
+
+        with open(self.file_name, 'w') as f:
+            f.write("")
+        self.repo = RepoStudent(self.file_name)
 
     def test_adaugare_student_repo(self):
         """
@@ -150,6 +155,11 @@ class TestStudentRepo(unittest.TestCase):
         student_gasit = self.repo.cautare_student(1)
         self.assertEqual(student_gasit, None)
 
+    def tearDown(self):
+        # Good for keeping the project folder clean
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
+
 
 class TestStudentService(unittest.TestCase):
     """
@@ -160,7 +170,10 @@ class TestStudentService(unittest.TestCase):
         """
         Initializeaza un repo si un service inainte de fiecare test.
         """
-        self.repo = RepoStudent()
+        self.file_name = "test_studenti.txt"
+        with open(self.file_name, 'w') as f:
+            f.write("")
+        self.repo = RepoStudent(self.file_name)
         self.service = ServiceStudenti(self.repo)
 
     def test_adauga_student(self):
@@ -269,11 +282,17 @@ class TestStudentService(unittest.TestCase):
         student_gasit = self.repo.cautare_student(99)
         self.assertEqual(student_gasit, None)
 
+    def tearDown(self):
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
 
 class TestDisciplinaRepo(unittest.TestCase):
 
     def setUp(self):
-        self.repo = RepoDisciplina()
+        self.file_name = "test_discipline.txt"
+        with open(self.file_name, 'w') as f:
+            f.write("")
+        self.repo = RepoDisciplina("test_discipline.txt")
 
     def test_adaugare_disciplina(self):
         disciplina1 = Disciplina(1, "FP", "Profesor1")
@@ -372,11 +391,18 @@ class TestDisciplinaRepo(unittest.TestCase):
         disciplina_gasita = self.repo.cauta_disciplina(99)
         self.assertEqual(disciplina_gasita, None)
 
+    def tearDown(self):
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
+
 
 class TestDisciplinaService(unittest.TestCase):
 
     def setUp(self):
-        self.repo = RepoDisciplina()
+        self.file_name = "test_discipline.txt"
+        with open(self.file_name, 'w') as f:
+            f.write("")
+        self.repo = RepoDisciplina(self.file_name)
         self.service = ServiceDisciplina(self.repo)
 
     def test_adauga_disciplina(self):
@@ -432,7 +458,7 @@ class TestDisciplinaService(unittest.TestCase):
 
         disciplina_inexistenta = Disciplina(99, "Logica", "ProfX")
         with self.assertRaises(EroareRepo):
-            self.service.sterge_disciplina(disciplina_inexistenta)
+            self.service.sterge_disciplina(99)
         self.assertEqual(len(self.repo.get_all_disciplina()),
                          0, "Lista ar trebui sa ramana goala.")
 
@@ -469,11 +495,18 @@ class TestDisciplinaService(unittest.TestCase):
         disciplina_gasita = self.repo.cauta_disciplina(99)
         self.assertEqual(disciplina_gasita, None)
 
+    def tearDown(self):
+
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
 
 class TestNoteRepo (unittest.TestCase):
 
     def setUp(self):
-        self.repo_note = RepoNote()
+        self.file_name = "test_note.txt"
+        with open(self.file_name, 'w') as f:
+            f.write("")
+        self.repo_note = RepoNote(self.file_name)
 
     def test_adauga_nota(self):
         """
@@ -529,13 +562,25 @@ class TestNoteRepo (unittest.TestCase):
         with self.assertRaises(EroareRepo):
             self.repo_note.update_nota(nota_gresita)
 
+    def tearDown(self):
+
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
+
 
 class TestNoteService (unittest.TestCase):
 
     def setUp(self):
-        self.repo_note = RepoNote()
-        self.repo_disciplina = RepoDisciplina()
-        self.repo_student = RepoStudent()
+        self.file_student = "test_studenti.txt"
+        self.file_discipline = "test_discipline.txt"
+        self.file_note = "test_note.txt"
+        with open(self.file_student, 'w') as f: f.write("")
+        with open(self.file_discipline, 'w') as f: f.write("")
+        with open(self.file_note, 'w') as f: f.write("")
+
+        self.repo_note = RepoNote("test_note.txt")
+        self.repo_disciplina = RepoDisciplina("test_discipline.txt")
+        self.repo_student = RepoStudent("test_studenti.txt")
         self.validare_nota = ValidareNota()
         self.service_note = ServiceNote(
             self.repo_disciplina, self.repo_student, self.repo_note, self.validare_nota)
@@ -598,13 +643,29 @@ class TestNoteService (unittest.TestCase):
         note = self.repo_note.get_all()
         self.assertLess(abs(note[0].get_nota_student()-6.23), 0.000001)
 
+    def tearDown(self):
+
+        if os.path.exists(self.file_student):
+            os.remove(self.file_student)
+
+        if os.path.exists(self.file_discipline):
+            os.remove(self.file_discipline)
+
+        if os.path.exists(self.file_note):
+            os.remove(self.file_note)
+
 
 class TestStatisticiNoi(unittest.TestCase):
     def setUp(self):
-        # Configurare infrastructura (Repo + Service)
-        self.repo_student = RepoStudent()
-        self.repo_disciplina = RepoDisciplina()
-        self.repo_nota = RepoNote()
+        self.file_student = "test_studenti.txt"
+        self.file_discipline = "test_discipline.txt"
+        self.file_note = "test_note.txt"
+        with open(self.file_student, 'w') as f: f.write("")
+        with open(self.file_discipline, 'w') as f: f.write("")
+        with open(self.file_note, 'w') as f: f.write("")
+        self.repo_student = RepoStudent(self.file_student)
+        self.repo_disciplina = RepoDisciplina(self.file_discipline)
+        self.repo_nota = RepoNote(self.file_note)
         self.validare_nota = ValidareNota()
 
         self.service = ServiceNote(
@@ -835,6 +896,17 @@ class TestStatisticiNoi(unittest.TestCase):
             3)
 
         print(lista_student_disciplina_leg)
+
+    def tearDown(self):
+
+        if os.path.exists(self.file_student):
+            os.remove(self.file_student)
+
+        if os.path.exists(self.file_discipline):
+            os.remove(self.file_discipline)
+
+        if os.path.exists(self.file_note):
+            os.remove(self.file_note)
 
 
 if __name__ == '__main__':

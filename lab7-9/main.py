@@ -13,10 +13,9 @@ from servicii.service_disciplina import ServiceDisciplina
 from servicii.service_note import ServiceNote
 
 from consola.consola import Consola
-
-repo_student = RepoStudent()
-repo_disciplina = RepoDisciplina()
-repo_nota = RepoNote()
+repo_student = RepoStudent("studenti.txt")
+repo_disciplina = RepoDisciplina("discipline.txt")
+repo_nota = RepoNote("note.txt")
 
 validare_nota = ValidareNota()
 
