@@ -895,7 +895,8 @@ class TestStatisticiNoi(unittest.TestCase):
         lista_student_disciplina_leg = self.service.top_studenti_disciplina_leg(
             3)
 
-        print(lista_student_disciplina_leg)
+        
+
 
     def tearDown(self):
 
