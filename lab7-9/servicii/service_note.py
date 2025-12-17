@@ -11,6 +11,8 @@ from exceptii.EroareRepo import EroareRepo
 
 from validare.validare_nota import ValidareNota
 
+from sortari.quick_sort import quick_sort
+from sortari.gnome_sort import gnome_sort
 
 class ServiceNote:
     def __init__(self, repo_disciplina: RepoDisciplina, repo_student: RepoStudent, repo_nota: RepoNote, validare_nota: ValidareNota):
@@ -103,7 +105,7 @@ class ServiceNote:
             if (id_disciplina == id_disciplina_nota) and (id_student == id_student_nota):
                 notele_studentului.append(nota.get_nota_student())
 
-        notele_studentului.sort()
+        notele_studentului = quick_sort(notele_studentului)
         return notele_studentului
 
     def media_la_student(self, id_student: int):
@@ -126,17 +128,12 @@ class ServiceNote:
         else:
             return
 
-    def media(self, note: list):
-        """
-        calculeaza media unei liste
-        """
-        cnt = 0
-        sum = 0
-        for nota in note:
-            sum += nota
-            cnt += 1
+    def media(self, note: list, suma=0, count=0):
+        if not note:
+            if count == 0: return 0
+            return suma / count
 
-        return sum/cnt
+        return self.media(note[1:], suma + note[0], count + 1)
 
     def statistica_note_la_disciplina(self, id_disciplina: Disciplina):
         """
@@ -160,8 +157,7 @@ class ServiceNote:
         lista de studenti ordonati dupa nume si notele pe care le au la disciplinile date
         """
         lista_studenti = self.statistica_note_la_disciplina(id_disciplina)
-        lista_studenti.sort(key=lambda x: (
-            x["student"].get_nume(), [n for n in x["nota"]]))
+        lista_studenti = gnome_sort(lista_studenti, lambda x: (x["student"].get_nume(), [n for n in x["nota"]]))
 
         return lista_studenti
 
@@ -196,7 +192,8 @@ class ServiceNote:
             medie = lista_studenti_dupa_medie[i]["media"]
             rezultat.append([student.get_nume(), medie])
 
-        rezultat.sort(key=lambda x: (x[1]), reverse=True)
+
+        rezultat = quick_sort(rezultat, lambda x: x[1], True)
 
         rezultat = rezultat[:math.ceil(len(lista_studenti_dupa_medie)/5)]
 
@@ -228,8 +225,7 @@ class ServiceNote:
         lista cu primii studenti
         """
         lista_nr_note_studenti = self.nr_nota_la_student()
-        lista_nr_note_studenti.sort(
-            key=lambda x: x["nr_de_note"], reverse=True)
+        lista_nr_note_studenti = gnome_sort(lista_nr_note_studenti, lambda x: x["nr_de_note"])
         return lista_nr_note_studenti[:numaru_de_studenti]
 
     def nr_nota_la_disciplina(self):
@@ -259,8 +255,8 @@ class ServiceNote:
         lista cu primii studenti
         """
         lista_nr_note_disciplina = self.nr_nota_la_disciplina()
-        lista_nr_note_disciplina.sort(
-            key=lambda x: x["nr_de_note"], reverse=True)
+        lista_nr_note_disciplina = quick_sort(lista_nr_note_disciplina, lambda x: x["nr_de_note"], True)
+
         return lista_nr_note_disciplina[: numaru_de_discipline]
 
     def verifica_daca_student_disciplina_au_legatura(self, id_student: int, id_disciplina: int):

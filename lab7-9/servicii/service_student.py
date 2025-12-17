@@ -17,16 +17,15 @@ class ServiceStudenti:
         '''
         self.__repo_student.adaugare_student_repo(student)
 
-    def creare_nume_rand(self):
-        length = self.generate_length()
+    def creare_nume_rand(self, length=None):
+        if length is None:
+            length = self.generate_length()
+
+        if length == 0:
+            return ""
+
         charset = string.ascii_letters
-        name = ""
-
-        for _ in range(length):
-            random_char = random.choice(charset)
-            name += random_char
-
-        return name
+        return random.choice(charset) + self.creare_nume_rand(length - 1)
 
     def generate_length(self):
         length = random.randint(1, 15)

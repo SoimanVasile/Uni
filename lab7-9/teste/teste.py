@@ -864,8 +864,10 @@ class TestStatisticiNoi(unittest.TestCase):
             numaru_de_disciplina)
 
         disciplina_prev = lista_nr_note_disciplina[0]["nr_de_note"]
+
         for disciplina in lista_nr_note_disciplina:
             if disciplina["nr_de_note"] > disciplina_prev:
+                print(disciplina["nr_de_note"], disciplina_prev)
                 assert False
 
             disciciplina_prev = disciplina["nr_de_note"]
