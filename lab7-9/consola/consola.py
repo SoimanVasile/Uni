@@ -35,6 +35,7 @@ class Consola:
             "adauga_student_rand": [self.ui_adauga_student_rand, 0, []],
             "lista_studenti": [self.ui_lista_studenti, 1, [int]],
             "top_studenti": [self.ui_top_studenti, 0, []],
+            "undo": [self.ui_undo, 0, []],
         }
 
     def run(self):
@@ -97,13 +98,13 @@ class Consola:
         print("17. top studenti - afiseaza primi 20% din studenti dupa medie")
 
     def verificare_parametru(self, comanda, parametri_comanda):
-        '''
+        """
         verifica daca parametrii comenzii sunt bune ca numar si tip
         :parem comanda -> comanda
         :parem parametri_comanda -> parametrii comenzii
         :return -
         raise eroare daca numarul de parametrii sunt gresit sau tipul parametrilor sunt gresit
-        '''
+        """
         numarul_parametri_comanda = self.__comenzi[comanda][1]
 
         if len(parametri_comanda) != numarul_parametri_comanda:
@@ -151,6 +152,12 @@ class Consola:
         :return lista de stundeti
         '''
         print(self.__service_studenti.afiseaza_studentii())
+
+    def ui_undo(self, parametri_comanda):
+        try:
+            self.__service_studenti.undo()
+        except ValueError as e:
+            print(e)
 
     def ui_sterge_student(self, parametri_comanda):
         '''
@@ -368,7 +375,7 @@ class Consola:
 
     def ui_top_studenti(self, parametri_comanda):
         """
-        afiseaza primit 20% din studenti cu cea mai mare medie
+        afiseaza primit 20 % din studenti cu cea mai mare medie
         """
         rezultat = self.__service_note.top_studenti()
         for student in rezultat:

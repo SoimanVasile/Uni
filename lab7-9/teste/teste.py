@@ -156,7 +156,6 @@ class TestStudentRepo(unittest.TestCase):
         self.assertEqual(student_gasit, None)
 
     def tearDown(self):
-        # Good for keeping the project folder clean
         if os.path.exists(self.file_name):
             os.remove(self.file_name)
 
@@ -285,6 +284,7 @@ class TestStudentService(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.file_name):
             os.remove(self.file_name)
+
 
 class TestDisciplinaRepo(unittest.TestCase):
 
@@ -500,6 +500,7 @@ class TestDisciplinaService(unittest.TestCase):
         if os.path.exists(self.file_name):
             os.remove(self.file_name)
 
+
 class TestNoteRepo (unittest.TestCase):
 
     def setUp(self):
@@ -574,9 +575,12 @@ class TestNoteService (unittest.TestCase):
         self.file_student = "test_studenti.txt"
         self.file_discipline = "test_discipline.txt"
         self.file_note = "test_note.txt"
-        with open(self.file_student, 'w') as f: f.write("")
-        with open(self.file_discipline, 'w') as f: f.write("")
-        with open(self.file_note, 'w') as f: f.write("")
+        with open(self.file_student, 'w') as f:
+            f.write("")
+        with open(self.file_discipline, 'w') as f:
+            f.write("")
+        with open(self.file_note, 'w') as f:
+            f.write("")
 
         self.repo_note = RepoNote("test_note.txt")
         self.repo_disciplina = RepoDisciplina("test_discipline.txt")
@@ -660,9 +664,12 @@ class TestStatisticiNoi(unittest.TestCase):
         self.file_student = "test_studenti.txt"
         self.file_discipline = "test_discipline.txt"
         self.file_note = "test_note.txt"
-        with open(self.file_student, 'w') as f: f.write("")
-        with open(self.file_discipline, 'w') as f: f.write("")
-        with open(self.file_note, 'w') as f: f.write("")
+        with open(self.file_student, 'w') as f:
+            f.write("")
+        with open(self.file_discipline, 'w') as f:
+            f.write("")
+        with open(self.file_note, 'w') as f:
+            f.write("")
         self.repo_student = RepoStudent(self.file_student)
         self.repo_disciplina = RepoDisciplina(self.file_discipline)
         self.repo_nota = RepoNote(self.file_note)
@@ -896,9 +903,6 @@ class TestStatisticiNoi(unittest.TestCase):
         nr_obiecte = 3
         lista_student_disciplina_leg = self.service.top_studenti_disciplina_leg(
             3)
-
-        
-
 
     def tearDown(self):
 

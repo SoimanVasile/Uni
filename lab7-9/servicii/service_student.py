@@ -8,6 +8,20 @@ import string
 class ServiceStudenti:
     def __init__(self, repo_student: RepoStudent):
         self.__repo_student = repo_student
+        self.__history = []
+
+    def save_state(self):
+        state = dict(self.__repo_student.get_all_dict())
+
+        self.__history.append(state)
+
+    def undo(self):
+        if not self.__history:
+            raise ValueError("Nu am cum sa fac undo!")
+
+        restore_state = self.__history.pop()
+
+        self.__repo_student.restore_state(restore_state)
 
     def adauga_student(self, student: Student):
         '''
@@ -15,6 +29,7 @@ class ServiceStudenti:
         :parem student -> Student
         :return -
         '''
+        self.save_state()
         self.__repo_student.adaugare_student_repo(student)
 
     def creare_nume_rand(self, length=None):

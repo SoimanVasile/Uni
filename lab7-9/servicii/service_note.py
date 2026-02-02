@@ -262,6 +262,7 @@ class ServiceNote:
     def verifica_daca_student_disciplina_au_legatura(self, id_student: int, id_disciplina: int):
         """
         verifica daca un student are legatura cu disciplina data
+        Complexitate O(n) - n numere de note in lista
         """
         lista_note = self.__repo_nota.get_all()
         for nota in lista_note:

@@ -8,6 +8,14 @@ class RepoStudent:
         self.__studenti = {}
         self.__calea_studenti = calea_studenti
 
+    def get_all_dict(self):
+        return self.__studenti
+
+    def restore_state(self, dict):
+        self.__studenti = dict
+
+        self.__salveaza_in_fisier()
+
     def creare_id_student(self):
         self.__read_studentii_din_fisier()
         id_existente = list(self.__studenti.keys())
