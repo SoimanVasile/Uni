@@ -1,2 +1,0 @@
-class EroareConsola(Exception):
-    pass
