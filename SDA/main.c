@@ -13,7 +13,7 @@ typedef struct {
 #define arr_push(arr,val)\
   do {\
     if ((arr) == NULL){ \
-      HEADER* header = malloc(ARR_INIT_CAPACITY * sizeof(*(arr)) + sizeof(HEADER)); \
+      HEADER* header = (HEADER*)malloc(ARR_INIT_CAPACITY * sizeof(*(arr)) + sizeof(HEADER)); \
       header->size = ARR_INIT_CAPACITY; \
       header->number_of_elements = 0; \
       arr = (void*)(header+1); \
