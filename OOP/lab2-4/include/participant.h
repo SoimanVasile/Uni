@@ -1,3 +1,6 @@
+#ifndef PARTICIPANT_H
+#define PARTICIPANT_H
+
 typedef struct{
     char* nume;
     char* prenume;
@@ -12,6 +15,8 @@ char* get_nume(Participant* participant);
 
 char* get_prenume(Participant* participant);
 
-char* get_scor(Participant* participant);
+int* get_scor(Participant* participant);
 
+void free_participant(Participant* participant);
 
+#endif

@@ -1,13 +1,10 @@
+#include "participant.h"
 #define REPO_INIT_CAPACITY 256
 #include "repo_participant.h"
 #include <stdlib.h>
 
 RepoParticipant new_repo_participant(){
-    RepoParticipant repo_participant;
-    repo_participant.capacitate = REPO_INIT_CAPACITY;
-    repo_participant.numar_elemente = 0;
-    repo_participant.participanti = (Participant*)malloc(REPO_INIT_CAPACITY * sizeof(Participant));
-
+    RepoParticipant repo_participant = {.capacitate = REPO_INIT_CAPACITY, .numar_elemente = 0,.participanti = (Participant*)malloc(REPO_INIT_CAPACITY * sizeof(Participant)) };
     return repo_participant;
 }
 
@@ -28,5 +25,12 @@ void print_repo_participant(RepoParticipant *repo_participant){
         print_participant(&repo_participant->participanti[i]);
     }
 }
+
+void free_repo_participant(RepoParticipant *repo_participant){
+    for (size_t i=0; i<repo_participant->numar_elemente; i++){
+        free_participant(&repo_participant->participanti[i]);    }
+    free(repo_participant->participanti);
+}
+
 
 

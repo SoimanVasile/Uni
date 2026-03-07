@@ -1,3 +1,5 @@
+#ifndef REPO_PARTICIPANT_H
+#define REPO_PARTICIPANT_H
 #include "participant.h"
 #include <stdio.h>
 
@@ -14,3 +16,6 @@ int adauga_participant(RepoParticipant* repo_participant, Participant participan
 void print_repo_participant(RepoParticipant* repo_participant);
 
 size_t len_repo_participant(RepoParticipant *repo_participant);
+
+void free_repo_participant(RepoParticipant *repo_participant);
+#endif 
