@@ -9,5 +9,5 @@ void run_all(){
     test_get_scor();
     test_adauga_participant();
     test_len_repo_participant();
-    printf("Toate testele au rulat cu succes!!");
+    printf("Toate testele au rulat cu succes!!\n");
 }

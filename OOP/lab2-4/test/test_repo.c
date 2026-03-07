@@ -43,13 +43,12 @@ void test_len_repo_participant(){
 char nume[64] = "Shannon";
 char prenume[64] = "Claude";
 int scor[10] = {10, 10, 10, 9, 10, 10, 9, 10, 9, 10};
-    Participant participant = new_participant(nume, prenume, scor);
     RepoParticipant repo_participant = new_repo_participant();
-    adauga_participant(&repo_participant, participant);
-    adauga_participant(&repo_participant, participant);
-    adauga_participant(&repo_participant, participant);
-    adauga_participant(&repo_participant, participant);
-    adauga_participant(&repo_participant, participant);
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
 
     assert(len_repo_participant(&repo_participant) == 5);
     free_repo_participant(&repo_participant);
