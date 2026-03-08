@@ -1,7 +1,10 @@
-#include "participant.h"
-#define REPO_INIT_CAPACITY 256
-#include "repo_participant.h"
 #include <stdlib.h>
+
+#include "participant.h"
+#include "repo_participant.h"
+#include "equal_overloading.h"
+
+#define REPO_INIT_CAPACITY 256
 
 RepoParticipant new_repo_participant(){
     RepoParticipant repo_participant = {.capacitate = REPO_INIT_CAPACITY, .numar_elemente = 0,.participanti = (Participant*)malloc(REPO_INIT_CAPACITY * sizeof(Participant)) };
@@ -32,5 +35,10 @@ void free_repo_participant(RepoParticipant *repo_participant){
     free(repo_participant->participanti);
 }
 
-
+int schimba_participant(RepoParticipant* repo_participant, Participant* participant){
+    for (size_t i=0; i<len_repo_participant(repo_participant); i++){
+        int result = equal(&repo_participant->participanti[i], participant);
+        (void) result;
+    }
+}
 

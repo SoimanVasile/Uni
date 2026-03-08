@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -Werror -g
+CFLAGS = -Iinclude -Wall -Wextra -Werror -g -std=c17
 
 SRCS = $(shell find src -name '*.c')
 SRCS_TEST = $(shell find test -name '*.c')

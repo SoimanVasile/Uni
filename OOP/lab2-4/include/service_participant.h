@@ -11,4 +11,6 @@ ServiceParticipant new_service_participant(RepoParticipant* repo_participant);
 
 int adauga_participant_service(ServiceParticipant* service_participant, char* nume, char* prenume, int* scor);
 
+void print_service_participant(ServiceParticipant* service_participant);
+
 #endif

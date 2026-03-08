@@ -41,3 +41,11 @@ char* get_prenume(Participant* participant){
 int* get_scor(Participant* participant){
     return participant->scor;
 }
+
+void set_nume(Participant* participant, char* nume){
+    strcpy(participant->nume, nume);
+}
+
+void set_prenume(Participant* participant, char* prenume){
+    strcpy(participant->prenume, prenume);
+}

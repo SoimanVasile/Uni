@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "participant.h"
 #include "repo_participant.h"
 #include "service_participant.h"
@@ -17,4 +15,8 @@ int adauga_participant_service(ServiceParticipant *service_participant, char *nu
     Participant participant = new_participant(nume, prenume, scor);
 
     return adauga_participant(service_participant->repo_participant, participant);
+}
+
+void print_service_participant(ServiceParticipant* service_participant){
+    print_repo_participant(service_participant->repo_participant);
 }

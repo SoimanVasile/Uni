@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "repo_participant.h"
 #include "service_participant.h"
@@ -16,9 +17,11 @@ void adauga_participant_ui(UI* ui){
     printf("Citeste nume:");
     getchar();
     fgets(buffer_nume, 64, stdin);
+    buffer_nume[strcspn(buffer_nume, "\n")] = '\0';
     printf("Citeste prenume");
     char buffer_prenume[64];
     fgets(buffer_prenume, 64, stdin);
+    buffer_prenume[strcspn(buffer_prenume, "\n")] = '\0';
     printf("Citeste 10 scoruri: ");
     int scor[10];
     for (int i=0 ;i<10; i++){
@@ -26,6 +29,10 @@ void adauga_participant_ui(UI* ui){
     }
     
     adauga_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor);
+}
+
+void print_participant_ui(UI* ui){
+    print_service_participant(ui->service_participant);
 }
 
 void menu(){
@@ -57,6 +64,7 @@ void run(){
         switch (user_mode){
             case 0: {exit=1; break;}
             case 1: {adauga_participant_ui(&ui); break;}
+            case 2: {print_participant_ui(&ui); break;}
         }
     }
 
