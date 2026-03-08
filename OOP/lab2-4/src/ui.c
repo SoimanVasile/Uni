@@ -28,7 +28,9 @@ void adauga_participant_ui(UI* ui){
         scanf("%d", &scor[i]);
     }
     
-    adauga_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor);
+    if (!adauga_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor)) {printf("Nu am reusit sa adaug participantul!\n"); return;};
+
+    printf("Am adaugat cu succes participantul!\n");
 }
 
 void modifica_participant_ui(UI *ui){
@@ -47,7 +49,9 @@ void modifica_participant_ui(UI *ui){
         scanf("%d", &scor[i]);
     }
 
-    modifica_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor);
+    if (!modifica_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor)) {printf("Nu am putut modifica participantul!\n"); return;};
+
+    printf("Am modificat cu succes participantul!\n");
 
 }
 

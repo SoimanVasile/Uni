@@ -10,7 +10,7 @@ ServiceParticipant new_service_participant(RepoParticipant* repo_participant){
 
 
 int adauga_participant_service(ServiceParticipant *service_participant, char *nume, char *prenume, int *scor){
-    if (!verifica_participant(nume, prenume, scor)) {printf("Participant invalid!"); return 0;}
+    if (!verifica_participant(nume, prenume, scor)) {printf("Participant invalid!\n"); return 0;}
 
     Participant participant = new_participant(nume, prenume, scor);
 
@@ -22,7 +22,7 @@ void print_service_participant(ServiceParticipant* service_participant){
 }
 
 int modifica_participant_service(ServiceParticipant *service_participant, char *nume, char *prenume, int *scor){
-    if (!verifica_participant(nume, prenume, scor)){ printf("Participant invalid!"); return 0;}
+    if (!verifica_participant(nume, prenume, scor)){ printf("Participant invalid!\n"); return 0;}
 
     Participant participant = new_participant(nume, prenume, scor);
 
