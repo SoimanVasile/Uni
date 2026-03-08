@@ -37,8 +37,15 @@ void free_repo_participant(RepoParticipant *repo_participant){
 
 int schimba_participant(RepoParticipant* repo_participant, Participant* participant){
     for (size_t i=0; i<len_repo_participant(repo_participant); i++){
-        int result = equal(&repo_participant->participanti[i], participant);
-        (void) result;
+        if (equal(&repo_participant->participanti[i], participant)) {
+            int* scor_vechi = get_scor(&repo_participant->participanti[i]);
+            int* scor_nou = get_scor(participant);
+            for (size_t i=0; i<10; i++){
+                scor_vechi[i] = scor_nou[i];
+            }
+            return 1;
+        }
     }
+    return 0;
 }
 

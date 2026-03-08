@@ -9,5 +9,6 @@ typedef struct{
 void run();
 UI new_ui(ServiceParticipant* service_participant);
 void adauga_participant_ui(UI* ui);
+void modifica_participant_ui(UI* ui);
 
 #endif

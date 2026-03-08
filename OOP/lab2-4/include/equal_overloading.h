@@ -9,9 +9,9 @@ int equalipip(int* x, int* y);
 int equalPpPp(Participant* x, Participant* y);
 
 #define equal(x,y) _Generic((x),\
-    char*: equalcpcp((x),(y)),\
-    int*: equalipip((x),(y)),\
-    Participant*: equalPpPp((x),(y))\
-        )
+    char*: equalcpcp,\
+    int*: equalipip,\
+    Participant*: equalPpPp\
+        )(x,y)
 
 #endif

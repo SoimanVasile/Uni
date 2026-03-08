@@ -18,4 +18,7 @@ void print_repo_participant(RepoParticipant* repo_participant);
 size_t len_repo_participant(RepoParticipant *repo_participant);
 
 void free_repo_participant(RepoParticipant *repo_participant);
+
+int schimba_participant(RepoParticipant* repo_participant, Participant* participant);
+
 #endif 
