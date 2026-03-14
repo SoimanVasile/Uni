@@ -19,4 +19,7 @@ int* get_scor(Participant* participant);
 
 void free_participant(Participant* participant);
 
+void set_nume(Participant* participant, char* nume);
+
+void set_prenume(Participant* participant, char* prenume);
 #endif

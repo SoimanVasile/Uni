@@ -8,4 +8,6 @@ void test_get_nume();
 void test_get_prenume();
 
 void test_get_scor();
+
+void test_setters();
 #endif

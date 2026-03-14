@@ -2,4 +2,5 @@
 | 0. exit                         |
 | 1. adauga participant           |
 | 2. afisare participanti         |
+| 3. modifica participantul       |
 +---------------------------------+

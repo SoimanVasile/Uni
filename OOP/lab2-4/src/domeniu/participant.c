@@ -43,9 +43,13 @@ int* get_scor(Participant* participant){
 }
 
 void set_nume(Participant* participant, char* nume){
+    free(participant->nume);
+    participant->nume = (char*)malloc(strlen(nume)+1);
     strcpy(participant->nume, nume);
 }
 
 void set_prenume(Participant* participant, char* prenume){
+    free(participant->prenume);
+    participant->prenume = (char*)malloc(strlen(prenume)+1);
     strcpy(participant->prenume, prenume);
 }

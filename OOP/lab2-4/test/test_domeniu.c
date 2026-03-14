@@ -1,7 +1,9 @@
-#include "test_domeniu.h"
-#include "participant.h"
 #include <string.h>
 #include <assert.h>
+
+#include "test_domeniu.h"
+#include "participant.h"
+#include "equal_overloading.h"
 
 void test_creare_participant(){
 char nume[64] = "Shannon";
@@ -59,7 +61,23 @@ int scor[10] = {10, 10, 10, 9, 10, 10, 9, 10, 9, 10};
 
     int* get_scor_participant = get_scor(&participant);
 
-    for (size_t i=0; i<10; i++)
-        assert(get_scor_participant[i] == scor[i]);
+    assert(equal(get_scor_participant, scor));
+    free_participant(&participant);
+}
+
+void test_setters() {
+    int scor[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    Participant participant = new_participant("VechiNume", "VechiPrenume", scor);
+    
+    // As discussed before, make sure your setters in participant.c use realloc/free+malloc!
+    set_nume(&participant, "NouNume");
+    assert(equal(get_nume(&participant), "NouNume") == 1);
+
+    assert(equal(get_nume(&participant), "NouNume1") == 0);
+
+    set_prenume(&participant, "NouPrenume");
+    assert(equal(get_prenume(&participant), "NouPrenume") == 1);
+    assert(equal(get_prenume(&participant), "NouPrenume1") == 0);
+
     free_participant(&participant);
 }

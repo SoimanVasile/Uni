@@ -1,10 +1,11 @@
-#include "test_repo.h"
-#include "participant.h"
-#include "repo_participant.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
+#include "test_repo.h"
+#include "participant.h"
+#include "repo_participant.h"
+#include "errors.h"
 
 void test_adauga_participant(){
 char nume[64] = "Shannon";
@@ -52,4 +53,27 @@ int scor[10] = {10, 10, 10, 9, 10, 10, 9, 10, 9, 10};
 
     assert(len_repo_participant(&repo_participant) == 5);
     free_repo_participant(&repo_participant);
+}
+
+void test_schimba_participant() {
+    RepoParticipant repo = new_repo_participant();
+    int scor1[10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int scor2[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    
+    Participant p1 = new_participant("Big", "Stein", scor1);
+    adauga_participant(&repo, p1);
+
+    // Test successful modification
+    Participant p2 = new_participant("Big", "Stein", scor2);
+    assert(schimba_participant(&repo, &p2) == SUCCES);
+    assert(get_scor(&repo.participanti[0])[0] == 2); // Verificam ca s-a modificat
+
+    // Test modification for non-existent participant
+    Participant p_inexistent = new_participant("Alt", "Cineva", scor2);
+    assert(schimba_participant(&repo, &p_inexistent) == ERR_NOT_FOUND);
+
+    // Free memory
+    free_participant(&p2);
+    free_participant(&p_inexistent);
+    free_repo_participant(&repo);
 }
