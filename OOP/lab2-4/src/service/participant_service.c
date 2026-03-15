@@ -91,7 +91,9 @@ Participant** sorteaza_dupa_nume_participanti(ServiceParticipant *service_partic
     while (!sorted){
         sorted = 1;
         for (size_t i=0; i<m-1; i++){
-            if (strcmp(participanti_sortat[i]->nume, participanti_sortat[i+1]->nume) > 0){
+            char* nume1 = get_nume(participanti_sortat[i]);
+            char* nume2 = get_nume(participanti_sortat[i+1]);
+            if (strcmp(nume1, nume2) > 0){
                 Participant* aux = participanti_sortat[i];
                 participanti_sortat[i]= participanti_sortat[i+1];
                 participanti_sortat[i+1]= aux;

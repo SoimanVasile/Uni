@@ -91,8 +91,9 @@ void filtrare_dupa_scor_ui(UI* ui){
 
 void sorteaza_participanti_ui(UI* ui){
     Participant** sortat = sorteaza_dupa_nume_participanti(ui->service_participant);
+    size_t size = len_service_participanti(ui->service_participant);
 
-    for (size_t i=0; i<len_service_participanti(ui->service_participant); i++)
+    for (size_t i=0; i<size; i++)
         print_participant(sortat[i]);
 
     free(sortat);
