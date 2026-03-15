@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 int main(int argc, char** argv) {
     int fd, rows, cols, i, j;
@@ -15,25 +18,28 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    if(reaad(fd, rows, sizeof(int)) <= 0) {
+    if(read(fd, &rows, sizeof(int)) <= 0) {
         perror("Could not read the number of rows");
         exit(1);
     }
 
-    if(read(fd, cols, sieof(int)) <= 0) {
+    if(read(fd, &cols, sizeof(int)) <= 0) {
         perror("Could not read the number of columns");
         exit(1);
     }
 
-    m = (int*)malloc(sizeof(int));
-    for(i=0; i<rows; i++ {
-        m[i] = (int*)malloc(sizeof(int));
-        read(fd, m[i], sizeof(int));
+    m = (int**)malloc(rows * sizeof(int*));
+    for(i=0; i<rows; i++){
+        m[i] = (int*)malloc(cols* sizeof(int));
+        read(fd, m[i], cols * sizeof(int));
         for(j=0; j<cols; j++) {
-            printf("%2d , &m[i][j]);
+            printf("%2d " , m[i][j]);
         }
         printf("\n");
     }
+
+    for (int i=0; i<rows; i++)
+      free(m[i]);
     free(m);
 
     close(fd);
