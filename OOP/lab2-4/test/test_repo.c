@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "test_repo.h"
 #include "participant.h"
@@ -76,4 +77,31 @@ void test_schimba_participant() {
     free_participant(&p2);
     free_participant(&p_inexistent);
     free_repo_participant(&repo);
+}
+
+void test_stergere_participant(){
+    RepoParticipant repo_participant = new_repo_participant();
+
+    char* nume = "Dune";
+    char* prenume = "Maghiara";
+    int scor[10] = {1, 2, 3, 4, 5, 6 ,7 ,8 , 9, 10};
+
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
+    
+    assert(SUCCES == sterge_participant(&repo_participant, nume, prenume));
+
+    assert(len_repo_participant(&repo_participant) == 4);
+
+    char* nume_inexistent = "Open";
+    char* prenume_inexistent = "AI";
+
+    sterge_participant(&repo_participant, nume_inexistent, prenume_inexistent);
+
+    assert(len_repo_participant(&repo_participant) == 4);
+
+    free_repo_participant(&repo_participant);
 }

@@ -15,6 +15,7 @@ void run_all(){
     test_adauga_participant();
     test_len_repo_participant();
     test_schimba_participant();
+    test_stergere_participant();
 
     test_validator();
 

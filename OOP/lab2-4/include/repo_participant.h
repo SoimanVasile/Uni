@@ -21,4 +21,5 @@ void free_repo_participant(RepoParticipant *repo_participant);
 
 int schimba_participant(RepoParticipant* repo_participant, Participant* participant);
 
+int sterge_participant(RepoParticipant* repo_participant, char* nume, char* prenume);
 #endif 

@@ -67,8 +67,14 @@ int sterge_participant(RepoParticipant* repo_participant, char* nume, char* pren
         char* nume_participant = get_nume(&repo_participant->participanti[i]);
         char* prenume_participant = get_prenume(&repo_participant->participanti[i]);
         if (equal(nume_participant, nume) && equal(prenume_participant, prenume)){
-
+            free_participant(&repo_participant->participanti[i]);
+            for (size_t j=i; j<len_repo_participant(repo_participant)-1; j++)
+                repo_participant->participanti[j] = repo_participant->participanti[j+1];
+            repo_participant->numar_elemente--;
+            return SUCCES;
         }
     }
+
+    return ERR_NOT_FOUND;
 }
 
