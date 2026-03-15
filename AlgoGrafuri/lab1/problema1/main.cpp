@@ -47,7 +47,7 @@ matrix_t from_adjacency_matrix_to_adjacency_list(size_t number_of_nodes, matrix_
   return adjacency_list;
 }
 
-matrix_t from_adjacency_matrix_to_incidence_matrix(size_t number_of_nodes, size_t number_of_edges, matrix_t adjacency_list){
+matrix_t from_adjacency_list_to_incidence_matrix(size_t number_of_nodes, size_t number_of_edges, matrix_t adjacency_list){
   matrix_t incidence_matrix{};
   
   for (size_t i=0; i<number_of_nodes; i++){
@@ -79,7 +79,7 @@ matrix_t from_incidence_matrix_to_adjacency_list(size_t number_of_nodes, size_t 
   }
   
   for (size_t j=0; j<number_of_edges; j++){
-    size_t first_node = -1;
+    int first_node = -1;
     for (size_t i=0; i<number_of_edges; i++){
       if (incidence_matrix[i][j] == 1){
         if (first_node != -1){
@@ -115,7 +115,7 @@ matrix_t from_adjacency_list_to_adjacency_matrix (size_t number_of_nodes, matrix
   return adjacency_matrix;
 }
 
-void prsize_t_matrix(matrix_t matrix, size_t n){
+void print_matrix(matrix_t matrix, size_t n){
   for (size_t i=0; i<n; i++){
     for (auto j: matrix[i])
       std::cout<<j<<' ';
@@ -129,14 +129,14 @@ int main(){
   size_t number_of_nodes{};
   size_t number_of_edges{};
   matrix_t adjacency_matrix = from_files_to_adjacency_matrix(number_of_nodes, number_of_edges);
-  prsize_t_matrix(adjacency_matrix, number_of_nodes);
+  print_matrix(adjacency_matrix, number_of_nodes);
   matrix_t adjacency_list = from_adjacency_matrix_to_adjacency_list(number_of_nodes, adjacency_matrix);
-  prsize_t_matrix(adjacency_list, number_of_nodes);
-  matrix_t incidence_matrix = from_adjacency_matrix_to_incidence_matrix(number_of_nodes, number_of_edges, adjacency_list);
-  prsize_t_matrix(incidence_matrix, number_of_nodes);
+  print_matrix(adjacency_list, number_of_nodes);
+  matrix_t incidence_matrix = from_adjacency_list_to_incidence_matrix(number_of_nodes, number_of_edges, adjacency_list);
+  print_matrix(incidence_matrix, number_of_nodes);
   adjacency_list = from_incidence_matrix_to_adjacency_list(number_of_nodes, number_of_edges, incidence_matrix);
-  prsize_t_matrix(adjacency_list, number_of_nodes);
+  print_matrix(adjacency_list, number_of_nodes);
   adjacency_matrix = from_adjacency_list_to_adjacency_matrix(number_of_nodes, adjacency_list);
-  prsize_t_matrix(adjacency_matrix, number_of_nodes);
+  print_matrix(adjacency_matrix, number_of_nodes);
   return 0;
 }
