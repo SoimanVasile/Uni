@@ -21,6 +21,10 @@ void run_all(){
 
     test_service_adauga();
     test_service_modifica();
+    test_service_sterge();
+    test_service_filtrare();
+    test_len_service();
+    test_service_sortare();
 
     printf("Toate testele au rulat cu succes!!\n");
 }
