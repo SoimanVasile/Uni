@@ -30,10 +30,17 @@ void adauga_participant_ui(UI* ui){
     for (int i=0 ;i<10; i++){
         scanf("%d", &scor[i]);
     }
+    int result = adauga_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor);
     
-    if (adauga_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor) != SUCCES) {printf("Nu am reusit sa adaug participantul!\n"); return;};
+    switch (result){
+        case ERR_INVALID_NUME: {printf("Nume invalid!\n"); break;}
+        case ERR_INVALID_PRENUME: {printf("Prenume invalid!\n"); break;}
+        case ERR_INVALID_SCOR: {printf("Scor invalid!\n"); break;}
+        case ERR_MEM_ALLOC: {printf("Nu am putut alocare memorie!\n"); break;}
+        case ERR_PAR_ALREADY_EXISTS: {printf("Participantul exista deja!\n"); break;}
+        case SUCCES: {printf("Am adaugat cu succes participantul!\n"); break;}
+    }
 
-    printf("Am adaugat cu succes participantul!\n");
 }
 
 void modifica_participant_ui(UI *ui){
@@ -51,10 +58,17 @@ void modifica_participant_ui(UI *ui){
     for (int i=0 ;i<10; i++){
         scanf("%d", &scor[i]);
     }
+    
+    int result = modifica_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor);
 
-    if (modifica_participant_service(ui->service_participant, buffer_nume, buffer_prenume, scor) != SUCCES) {printf("Nu am putut modifica participantul!\n"); return;};
-
-    printf("Am modificat cu succes participantul!\n");
+    switch (result){
+        case ERR_INVALID_NUME: {printf("Nume invalid!\n"); break;}
+        case ERR_INVALID_PRENUME: {printf("Prenume invalid!\n"); break;}
+        case ERR_INVALID_SCOR: {printf("Scor invalid!"); break;}
+        case ERR_MEM_ALLOC: {printf("Nu am putut alocare memorie!\n"); break;}
+        case ERR_NOT_FOUND: {printf("Nu am putut modifica participantul!\n"); break;}
+        case SUCCES: {printf("Am modificat cu succes participantul!\n"); break;}
+    }
 
 }
 void sterge_participant_ui(UI* ui){
@@ -68,11 +82,16 @@ void sterge_participant_ui(UI* ui){
     fgets(buffer_prenume, 64, stdin);
     buffer_prenume[strcspn(buffer_prenume, "\n")] = '\0';
 
-    if (sterge_participant_service(ui->service_participant, buffer_nume, buffer_prenume) != SUCCES) {
-        printf("Nu am gasit participantul!\n"); return;
-    }
+    int result = sterge_participant_service(ui->service_participant, buffer_nume, buffer_prenume);
 
-    printf("Am sters cu succes participantul!\n");
+    switch (result){
+        case ERR_INVALID_NUME: {printf("Nume invalid!\n"); break;}
+        case ERR_INVALID_PRENUME: {printf("Prenume invalid!\n"); break;}
+        case ERR_INVALID_SCOR: {printf("Scor invalid!\n"); break;}
+        case ERR_MEM_ALLOC: {printf("Nu am putut alocare memorie!\n"); break;}
+        case ERR_NOT_FOUND: {printf("Participantul nu exista!\n"); break;}
+        case SUCCES: {printf("Am sters cu succes participantul!\n"); break;}
+    }
 }
 
 void filtrare_dupa_scor_ui(UI* ui){

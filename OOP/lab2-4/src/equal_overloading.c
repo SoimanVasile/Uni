@@ -24,7 +24,7 @@ int equalipip(int *x, int *y){
 
 int equalPpPp(Participant *x, Participant *y){
     if (!equalcpcp(x->nume, y->nume)) return 0;
-    if (!equalcpcp(x->prenume, x->prenume)) return 0;
+    if (!equalcpcp(x->prenume, y->prenume)) return 0;
 
     return 1;
 }

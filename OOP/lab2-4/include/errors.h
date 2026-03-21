@@ -8,6 +8,7 @@ typedef enum{
     ERR_INVALID_SCOR = 3,
     ERR_NOT_FOUND = 4,
     ERR_MEM_ALLOC = 5,
+    ERR_PAR_ALREADY_EXISTS = 6,
 } ParticipantError;
 
 #endif

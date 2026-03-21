@@ -13,6 +13,13 @@ RepoParticipant new_repo_participant(){
 }
 
 int adauga_participant(RepoParticipant *repo_participant,Participant participant){
+    
+    for (int i=0; i<repo_participant->numar_elemente; i++){
+        if (equal(&participant, &repo_participant->participanti[i])){
+            return ERR_PAR_ALREADY_EXISTS;
+        }
+    }
+
     if (repo_participant->numar_elemente >= repo_participant->capacitate){
         size_t new_capacity = repo_participant->capacitate<<1;
 
