@@ -71,6 +71,7 @@ dto_filtrare* filtrare_dupa_scor(ServiceParticipant *service_participant, int sc
 
 void free_dto_filtrare(dto_filtrare *filtrare){
     free(filtrare->participanti_filtrati);
+    free(filtrare);
 }
 
 Participant** sorteaza_dupa_nume_participanti(ServiceParticipant *service_participant){

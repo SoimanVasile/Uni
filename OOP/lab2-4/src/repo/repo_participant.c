@@ -60,8 +60,8 @@ int schimba_participant(RepoParticipant* repo_participant, Participant* particip
         if (equal(&repo_participant->participanti[i], participant)) {
             int* scor_vechi = get_scor(&repo_participant->participanti[i]);
             int* scor_nou = get_scor(participant);
-            for (size_t i=0; i<10; i++){
-                scor_vechi[i] = scor_nou[i];
+            for (size_t j=0; j<10; j++){
+                scor_vechi[j] = scor_nou[j];
             }
             return SUCCES;
         }
