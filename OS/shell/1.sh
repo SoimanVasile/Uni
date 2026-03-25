@@ -9,6 +9,7 @@ D=$1
 cat "$D" | awk -F' ' 'NF > 0  {print $1}' | sort | uniq | while read -r name; do
 
     count=$(grep -c -E "^$name" ./ps.fake)
-    echo "$name: $count"
+    full_name=$( pinky -l "$name")
+    echo "$full_name: $count"
 
 done
