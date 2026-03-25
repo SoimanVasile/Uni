@@ -33,8 +33,8 @@ labirint_t citire_labirint(std::string file_path){
 }
 
 std::pair<int, int> get_the_position_of_char(labirint_t labirint, char character){
-    for (int i=0; i<labirint.size(); i++){
-        for (int j=0; j<labirint[i].size(); j++){
+    for (size_t i=0; i<labirint.size(); i++){
+        for (size_t j=0; j<labirint[i].size(); j++){
             if (labirint[i][j] == character)
                 return {i, j};
         }
@@ -49,7 +49,7 @@ vector<item> maze_solver(labirint_t labirint, std::pair<int, int> start_position
 
     labirint_t labirint_rezolvare=labirint;
     
-    int index=0;
+    size_t index=0;
     vector<item> queue;
     queue.push_back({{start_position.first, start_position.second}, {-1, -1}});
     labirint_rezolvare[start_position.first][start_position.second] = '9';
@@ -61,7 +61,7 @@ vector<item> maze_solver(labirint_t labirint, std::pair<int, int> start_position
             int new_y = y + dy[i];
             if (new_x<0 || new_x>=labirint_rezolvare.size())
                 continue;
-            if (new_y<0 || new_y>=labirint_rezolvare[1].size())
+            if (new_y<0 || new_y>=labirint_rezolvare[new_x].size())
                 continue;
             if (new_x == finish_position.first && new_y == finish_position.second){
                 queue.push_back({{new_x, new_y}, {x, y}});
@@ -94,18 +94,29 @@ int main(int argc, char** argv){
     print_labirint_t(labirint);
     std::pair<int, int> start = get_the_position_of_char(labirint, 'S');
     std::pair<int, int> finish = get_the_position_of_char(labirint, 'F');
-    vector<item> queue = maze_solver(labirint, start, finish);
-    int current = queue.size()-1;
-    int solver = current;
-    while (queue[solver].parent_cell.first !=-1 && queue[solver].parent_cell.second != -1){
-        int x = queue[current].cell.first;
-        int y = queue[current].cell.second;
-        labirint[queue[solver].cell.first][queue[solver].cell.second] = '#';
-        if (x == queue[solver].parent_cell.first && y == queue[solver].parent_cell.second){
-            solver = current;
-        }
-        current--;
+    if (start.first == -1 || finish.first == -1){
+        std::cout<<"Labirintul nu contine 'S' sau 'F'!\n";
+        return 1;
     }
+    vector<item> queue = maze_solver(labirint, start, finish);
+    if (queue.empty()){
+        std::cout<<"Nu exista solutie!\n";
+        return 1;
+    }
+    int solver = queue.size()-1;
+    while (queue[solver].parent_cell.first != -1 && queue[solver].parent_cell.second != -1){
+        labirint[queue[solver].cell.first][queue[solver].cell.second] = '#';
+        for (int k = solver - 1; k >= 0; k--){
+            if (queue[k].cell.first == queue[solver].parent_cell.first &&
+                queue[k].cell.second == queue[solver].parent_cell.second){
+                solver = k;
+                break;
+            }
+        }
+    }
+    labirint[start.first][start.second] = 'S';
+    labirint[finish.first][finish.second] = 'F';
+    std::cout<<"\nSolutie:\n";
     print_labirint_t(labirint);
     return 0;
 }
