@@ -1,12 +1,8 @@
-//
-// Created by User on 3/17/2026.
-//
-
 #include "domain.h"
 #include <string.h>
 #include <stdlib.h>
 
-MateriePrima* creeaza_materie(char* nume, char* producator, int cantitate) {
+MateriePrima* creeaza_materie(char* nume, char* producator, float cantitate) {
     MateriePrima* m = malloc(sizeof(MateriePrima));
     m->nume = strdup(nume);
     m->producator = strdup(producator);

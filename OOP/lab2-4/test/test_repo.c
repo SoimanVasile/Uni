@@ -52,7 +52,7 @@ int scor[10] = {10, 10, 10, 9, 10, 10, 9, 10, 9, 10};
     adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
     adauga_participant(&repo_participant, new_participant(nume, prenume, scor));
 
-    assert(len_repo_participant(&repo_participant) == 5);
+    assert(len_repo_participant(&repo_participant) == 1);
     free_repo_participant(&repo_participant);
 }
 
@@ -94,14 +94,14 @@ void test_stergere_participant(){
     
     assert(SUCCES == sterge_participant(&repo_participant, nume, prenume));
 
-    assert(len_repo_participant(&repo_participant) == 4);
+    assert(len_repo_participant(&repo_participant) == 0);
 
     char* nume_inexistent = "Open";
     char* prenume_inexistent = "AI";
 
     sterge_participant(&repo_participant, nume_inexistent, prenume_inexistent);
 
-    assert(len_repo_participant(&repo_participant) == 4);
+    assert(len_repo_participant(&repo_participant) == 0);
 
     free_repo_participant(&repo_participant);
 }

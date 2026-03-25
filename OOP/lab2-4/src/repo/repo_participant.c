@@ -14,8 +14,9 @@ RepoParticipant new_repo_participant(){
 
 int adauga_participant(RepoParticipant *repo_participant,Participant participant){
     
-    for (int i=0; i<repo_participant->numar_elemente; i++){
+    for (size_t i=0; i<repo_participant->numar_elemente; i++){
         if (equal(&participant, &repo_participant->participanti[i])){
+            free_participant(&participant);
             return ERR_PAR_ALREADY_EXISTS;
         }
     }
