@@ -1,0 +1,18 @@
+[
+    {
+        "file": "src/repo/repo_produs.cpp",
+        "arguments": [
+            "g++",
+            "-Iinclude",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-o",
+            "main",
+            "src/repo/repo_produs.cpp"
+        ],
+        "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+        "output": "main"
+    }
+]

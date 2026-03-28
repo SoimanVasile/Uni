@@ -1,0 +1,6 @@
++=====================+
+| 0. Exit             |
+| 1. Adauga Produs    |
+| 2. Afiseaza Produse |
++=====================+
+Alege un mod:
