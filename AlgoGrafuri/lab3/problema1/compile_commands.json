@@ -1,0 +1,16 @@
+[
+  {
+    "file": "./src/p1.cpp",
+    "arguments": [
+      "g++",
+      "./src/p1.cpp",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-o",
+      "p1"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/AlgoGrafuri/lab3/problema1",
+    "output": "p1"
+  }
+]
