@@ -5,12 +5,15 @@ if [[ -z $1 ]]; then
     exit 1
 fi
 
-D=$1
 freq=0
-find "$D" | grep -E ".\.c" | while read file_path; do
-    word_count=$(wc "$file_path" | awk -F' ' '{print $1}')
-    if (( $word_count >= 500 && freq < 2 )); then
+find "$1" -type f -name "*.c" | while read file_path; do
+    number_of_lines=$(cat "$file_path" | wc -l)
+    if (( number_of_lines >= 500 )); then
         echo "$file_path"
-        freq=$((freq + 1))
+        ((freq++))
+    fi
+
+    if (( freq == 2)); then
+        break
     fi
 done

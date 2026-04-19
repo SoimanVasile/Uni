@@ -1,14 +1,16 @@
 #!/bin/bash
 
-while true; do
-    
-    for program in $@; do
-        pid=$(ps -a | grep "$program" | awk -F' ' '{print $1}')
-        if [[ -n $pid ]]; then
-            kill "$pid"
-            echo "killed $program"
-        fi
-    done
+if [[ -z $1 ]]; then
+    echo "No input file!"
+    exit 1
+fi
 
-    sleep 1
+while true; do
+    for name in $@; do
+        pids=$(ps -all | tail -n +2 | grep "$name$" | awk '{print $4}')
+        for pid in $pids; do
+            kill "$pid"
+            echo "Killed $name with pid: $pid"
+        done
+    done
 done

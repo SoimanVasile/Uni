@@ -1,19 +1,14 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
-    echo "I need an input file"
+if [[ -z $1 ]]; then
+    echo "No input file!"
     exit 1
 fi
 
-D=$1
-
-find "$D" | while read file_path; do
-    
-    if [ -L "$file_path" ]; then
-        
-        if [ ! -e "$file_path" ]; then
-            echo "$file_path"
+find "$1" -type l | while read file_path; do
+    if [[ -h "$file_path" ]]; then
+        if [[ ! -e "$file_path" ]]; then
+            echo "Broken link: $file_path"
         fi
-
     fi
 done
