@@ -2,6 +2,7 @@
 #define PRODUS_TIP_H
 
 #include <iostream>
+#include <string>
 enum ProdusTip{
     LACTATE,
     CARNE,
@@ -9,8 +10,20 @@ enum ProdusTip{
     CURATENIE,
 };
 
+class ProdusTipExpection {
+    private:
+        std::string eroare;
+
+    public:
+        ProdusTipExpection(std::string error) : eroare(error) {}
+
+        std::string mesaj() const{
+            return eroare;
+        }
+};
+
 std::istream& operator>>(std::istream& stream, ProdusTip& produs);
 
-std::ostream& operator>>(std::ostream& stream, ProdusTip& produs);
+std::ostream& operator<<(std::ostream& stream, const ProdusTip& produs);
 
 #endif

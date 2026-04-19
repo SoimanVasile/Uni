@@ -6,7 +6,7 @@
 class Validator{
     public:
         Validator() = default;
-        void validare_produs(std::string& name, std::string& producator, ProdusTip tip, float pret);
+        void validare_produs(const std::string& name,const std::string& producator,const ProdusTip tip,const float pret);
 };
 
 class ValidatorException{

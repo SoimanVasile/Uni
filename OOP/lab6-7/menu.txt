@@ -1,6 +1,14 @@
-+=====================+
-| 0. Exit             |
-| 1. Adauga Produs    |
-| 2. Afiseaza Produse |
-+=====================+
-Alege un mod:
++==============================================+
+| 0. Exit                                      |
+| 1. Adauga un produs                          |
+| 2. Afiseaza toate produsele                  |
+| 3. Sterge un produs                          |
+| 4. Modifica un produs                        |
+| 5. Cauta un produs (dupa nume si producator) |
+| 6. Filtreaza produsele dupa pret             |
+| 7. Sorteaza produsele dupa pret              |
+| 8. Filtreaza produsele dupa nume             |
+| 9. Filtreaza produsele dupa producator       |
+| 10. Sorteaza produsele dupa nume             |
+| 11. Sorteaza produsele dupa nume si tip      |
++==============================================+

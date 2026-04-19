@@ -1,13 +1,12 @@
 #ifndef REPO_PRODUS_H
 #define REPO_PRODUS_H
 
-#include <vector>
-
+#include "MyList.h"
 #include "domain_produs.h"
 class RepoProdus{
     
     private:
-        std::vector<Produs> lista_produse;
+        MyList<Produs> lista_produse;
 
     public:
 
@@ -15,9 +14,17 @@ class RepoProdus{
 
         void add_produs(const Produs& produs);
 
-        void print();
+        size_t size() const;
 
-        size_t size();
+        void sterge_produs(const std::string& nume, const std::string& producator);
+
+        void modifica_produs(const Produs& produs);
+
+        const Produs& find_dupa_index(size_t i) const;
+
+        const Produs& find_dupa_nume_si_producator(const std::string& nume, const std::string& producator) const;
+
+        const MyList<Produs>& get_all() const;
 };
 
 #include <string>

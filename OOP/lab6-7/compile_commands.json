@@ -1,18 +1,138 @@
 [
-    {
-        "file": "src/repo/repo_produs.cpp",
-        "arguments": [
-            "g++",
-            "-Iinclude",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-g",
-            "-o",
-            "main",
-            "src/repo/repo_produs.cpp"
-        ],
-        "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
-        "output": "main"
-    }
+  {
+    "file": "src/repo/repo_produs.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/repo/repo_produs.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/validator.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/validator.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/ui.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/ui.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/produs_tip.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/produs_tip.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/main.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/main.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/domain/produs.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/domain/produs.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/domain/attrib_produs.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/domain/attrib_produs.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  },
+  {
+    "file": "src/service/service_produs.cpp",
+    "arguments": [
+      "g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-std=c++20",
+      "-o",
+      "main",
+      "src/service/service_produs.cpp"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/OOP/lab6-7",
+    "output": "main"
+  }
 ]

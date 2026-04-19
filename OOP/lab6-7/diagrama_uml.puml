@@ -1,0 +1,152 @@
+@startuml Diagrama Clatelor
+
+skinparam classAttributeIconSize 0
+skinparam shadowing true
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+
+package "Presentation Layer" {
+    class UI {
+        - service_produs : ServiceProdus&
+        + UI(service_produs : ServiceProdus&)
+        + run() : void
+        - add_produs() : void
+        - print() : void
+        - sterge_produs() : void
+        - modifica_produs() : void
+        - find_dupa_nume_si_producator() : void
+        - filtrare_dupa_pret() : void
+        - filtrare_dupa_nume() : void
+        - filtrare_dupa_producator() : void
+        - sortare_dupa_pret() : void
+        - sortare_dupa_nume() : void
+        - sortare_dupa_nume_si_tip() : void
+    }
+}
+
+package "Application Layer" {
+    class ServiceProdus {
+        - repo_produs : RepoProdus&
+        - validator_produs : Validator&
+        + ServiceProdus(repo_produs : RepoProdus&, validator : Validator&)
+        + add_produs(attrib : AttributeProdus&, tip : ProdusTip, pret : float) : void
+        + get_all() : MyList<Produs>
+        + sterge_produs(name : string, producator : string) : void
+        + modifica_produs(attrib : AttributeProdus&, tip : ProdusTip, pret : float) : void
+        + find_dupa_nume_si_producator(name : string, producator : string) : Produs&
+        + filtrare_dupa_pret(pret : float) : MyList<Produs>
+        + sortare_dupa_pret() : MyList<Produs>
+        + sortare_dupa_nume_si_tip() : MyList<Produs>
+    }
+}
+
+package "Infrastructure / Data Layer" {
+    class RepoProdus {
+        - lista_produse : MyList<Produs>
+        + RepoProdus()
+        + add_produs(produs : Produs&) : void
+        + size() : size_t
+        + sterge_produs(nume : string, producator : string) : void
+        + modifica_produs(produs : Produs&) : void
+        + find_dupa_index(i : size_t) : Produs&
+        + find_dupa_nume_si_producator(nume : string, producator : string) : Produs&
+        + get_all() : MyList<Produs>&
+    }
+
+    class Validator {
+        + Validator()
+        + validare_produs(name : string, producator : string, tip : ProdusTip, pret : float) : void
+    }
+
+    class MyList<T> {
+        + add(elem : T) : void
+        + size() : size_t
+        + get(i : size_t) : T
+        + begin() : iterator
+        + end() : iterator
+    }
+}
+
+package "Domain Layer" {
+    class Produs {
+        - attrib : AttributeProdus
+        - tip : ProdusTip
+        - pret : float
+        + Produs()
+        + Produs(attrib : AttributeProdus&, tip : ProdusTip, pret : float)
+        + get_nume() : string
+        + get_producator() : string
+        + get_pret() : float
+        + get_tip() : ProdusTip
+        + set_pret(pret_nou : float) : void
+        + set_tip(tip_nou : ProdusTip) : void
+    }
+
+    class AttributeProdus {
+        - nume : string
+        - producator : string
+        + AttributeProdus()
+        + AttributeProdus(n : string, prod : string)
+        + get_nume() : string
+        + get_producator() : string
+    }
+
+    enum ProdusTip {
+        LACTATE
+        CARNE
+        DULCIURI
+        CURATENIE
+    }
+}
+
+package "Exceptions" {
+    class RepoException {
+        - mesaj_eroare : string
+        + get_mesaj() : string
+    }
+
+    class ValidatorException {
+        - mesaj_eroare : string
+        + get_mesaj() : string
+    }
+
+    class ProdusTipExpection {
+        - eroare : string
+        + mesaj() : string
+    }
+}
+
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+
+' Relationships
+UI -down-> ServiceProdus : service_produs
+ServiceProdus -down-> RepoProdus : repo_produs
+ServiceProdus -down-> Validator : validator_produs
+
+RepoProdus *-down-> MyList : lista_produse
+MyList *-down-> Produs : elemente
+
+Produs *-- AttributeProdus : attrib
+Produs *-- ProdusTip : tip
+
+' Note for Exceptions to avoid many arrows
+note bottom of ServiceProdus
+  Throws:
+  - ValidatorException
+  - RepoException
+end note
+
+note bottom of RepoProdus
+  Throws:
+  - RepoException
+end note
+
+note bottom of Validator
+  Throws:
+  - ValidatorException
+end note
+
+@enduml

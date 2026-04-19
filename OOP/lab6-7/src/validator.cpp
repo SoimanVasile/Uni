@@ -1,6 +1,6 @@
 #include "validator.h"
 
-void Validator::validare_produs(std::string& name, std::string& producator, ProdusTip tip, float pret){
+void Validator::validare_produs(const std::string& name, const std::string& producator, const ProdusTip tip, const float pret) {
     std::string error = "";
     if (name.empty()){
         error += "Numele este gol!\n";

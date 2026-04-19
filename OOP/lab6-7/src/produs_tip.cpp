@@ -1,19 +1,24 @@
 #include "produs_tip.h"
+#include <algorithm>
+#include <cctype>
+#include <exception>
 
 std::istream& operator>>(std::istream& stream, ProdusTip& tip) {
     std::string input;
     stream >> input;
 
-    if (input == "LACTATE" || input == "lactate") {
-        tip = LACTATE;
-    } else if (input == "CARNE" || input == "carne") {
-        tip = CARNE;
-    } else if (input == "DULCIURI" || input == "dulciuri") {
-        tip = DULCIURI;
-    } else if (input == "CURATENIE" || input == "curatenie") {
-        tip = CURATENIE;
+    std::transform(input.begin(), input.end(), input.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    if  (input == "lactate") {
+        tip = ProdusTip::LACTATE;
+    } else if (input == "carne") {
+        tip = ProdusTip::CARNE;
+    } else if (input == "dulciuri") {
+        tip = ProdusTip::DULCIURI;
+    } else if (input == "curatenie") {
+        tip = ProdusTip::CURATENIE;
     } else {
-        stream.setstate(std::ios::failbit); 
+        throw ProdusTipExpection("Nu exista acest tip!\n");
     }
 
     return stream;
