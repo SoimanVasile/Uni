@@ -1,5 +1,6 @@
 #include <cassert>
 #include "repo_produs.h"
+#include "undo.h"
 
 void test_repo() {
     RepoProdus repo;

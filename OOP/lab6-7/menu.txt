@@ -1,14 +1,18 @@
-+==============================================+
-| 0. Exit                                      |
-| 1. Adauga un produs                          |
-| 2. Afiseaza toate produsele                  |
-| 3. Sterge un produs                          |
-| 4. Modifica un produs                        |
-| 5. Cauta un produs (dupa nume si producator) |
-| 6. Filtreaza produsele dupa pret             |
-| 7. Sorteaza produsele dupa pret              |
-| 8. Filtreaza produsele dupa nume             |
-| 9. Filtreaza produsele dupa producator       |
-| 10. Sorteaza produsele dupa nume             |
-| 11. Sorteaza produsele dupa nume si tip      |
-+==============================================+
+0. Iesire
+1. Adauga Produs
+2. Afisare Produse
+3. Sterge Produs
+4. Modifica Produs
+5. Cauta Produs In Magazin
+6. Filtrare Dupa Pret
+7. Sortare Dupa Pret
+8. Filtrare Dupa Nume
+9. Filtrare Dupa Producator
+10. Sortare Dupa Nume
+11. Sortare Dupa Nume si Tip
+--- Optiuni Noi Iteratia 1 ---
+12. Undo ultima operatie
+13. Goleste Cos
+14. Adauga in Cos un produs dupa Nume
+15. Genereaza Cos (random)
+16. Export Cos Cumparaturi (CSV/HTML)

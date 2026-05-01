@@ -1,12 +1,18 @@
-#include "repo_produs.h"
+#include "qapplication.h"
+#include "repo_file.h"
 #include "service_produs.h"
-#include "ui.h"
+#include "MainWindow.h"
 #include "validator.h"
+#include <QApplication>
 
-int main(){
-    RepoProdus repo;
+int main(int argc, char** argv){
+    QApplication app(argc, argv);
+    RepoFile repo("repo_produs.bak");
     Validator validator;
     ServiceProdus service(repo, validator);
-    UI ui(service);
-    ui.run();
+
+    MainWindow window(service);
+    window.show();
+
+    return app.exec();
 }

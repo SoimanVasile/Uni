@@ -1,6 +1,38 @@
 #include <cassert>
 #include "service_produs.h"
 #include "validator.h"
+#include "undo.h"
+#include <fstream>
+
+void test_export_cos() {
+    RepoProdus repo;
+    Validator val;
+    ServiceProdus srv(repo, val);
+
+    srv.add_produs(AttributeProdus("prod1", "prod"), CARNE, 10);
+    srv.cos_adauga("prod1");
+
+    srv.cos_export_csv("test_export.csv");
+    srv.cos_export_html("test_export.html");
+
+    std::ifstream in_csv("test_export.csv");
+    assert(in_csv.is_open());
+    in_csv.close();
+
+    std::ifstream in_html("test_export.html");
+    assert(in_html.is_open());
+    in_html.close();
+
+    try {
+        srv.cos_export_csv("/invalid_path/test_export.csv");
+        assert(false);
+    } catch(RepoException&) {}
+
+    try {
+        srv.cos_export_html("/invalid_path/test_export.html");
+        assert(false);
+    } catch(RepoException&) {}
+}
 
 void test_service() {
     RepoProdus repo;
@@ -45,4 +77,44 @@ void test_service() {
 
     srv.sterge_produs("a", "p1");
     assert(srv.get_all().size() == 2);
+
+    RepoProdus frepo;
+    ServiceProdus fsrv(frepo, val);
+
+    AttributeProdus fa("test1", "p");
+    fsrv.add_produs(fa, CARNE, 100);
+    fsrv.undo();
+    assert(fsrv.get_all().size() == 0);
+
+    fsrv.add_produs(fa, CARNE, 100);
+    fsrv.modifica_produs(fa, DULCIURI, 200);
+    fsrv.undo();
+    assert(fsrv.get_all().at(0).get_tip() == CARNE);
+    
+    fsrv.sterge_produs("test1", "p");
+    fsrv.undo();
+    assert(fsrv.get_all().size() == 1);
+    fsrv.undo();
+    try {
+        fsrv.undo(); 
+        assert(false);
+    } catch(ValidatorException&) {}
+
+    fsrv.add_produs(fa, CARNE, 100);
+    fsrv.cos_adauga("test1");
+    try { 
+        fsrv.cos_adauga("inexistent"); 
+        assert(false);
+    } catch(RepoException&) {}
+    assert(fsrv.cos_get_all().size() == 1);
+    assert(fsrv.cos_total() == 100);
+
+    fsrv.cos_goleste();
+    assert(fsrv.cos_get_all().size() == 0);
+
+    fsrv.add_produs(AttributeProdus("test2", "p"), LACTATE, 50);
+    fsrv.cos_genereaza(5);
+    assert(fsrv.cos_get_all().size() == 5);
+
+    test_export_cos();
 }

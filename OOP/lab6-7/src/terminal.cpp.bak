@@ -3,6 +3,8 @@
 #include <string>
 
 #include "ui.h"
+
+#include <math.h>
 #include "attribute_produs.h"
 #include "produs_tip.h"
 #include "repo_produs.h"
@@ -13,7 +15,7 @@ UI::UI(ServiceProdus& service) : service_produs(service) {}
 
 void UI::add_produs(){
     std::string name, producator;
-    float pret;
+    float pret = NAN;
     ProdusTip tip;
 
     std::cout<< "Nume: ";
@@ -34,6 +36,7 @@ void UI::add_produs(){
     try {
         AttributeProdus attrib(name, producator);
         service_produs.add_produs(attrib, tip, pret);
+        std::cout << "Produs adaugat cu succes!\n";
     } catch (const ValidatorException& e){
         std::cerr << "Validation error: "<< e.get_mesaj() << std::endl;
         return;
@@ -54,6 +57,7 @@ void UI::sterge_produs(){
     
     try{
         service_produs.sterge_produs(name, producator);
+        std::cout << "Produs sters cu succes!\n";
     } catch (const ValidatorException& e){
         std::cerr<< "Validation error: " << e.get_mesaj() << std::endl;
         return;
@@ -78,11 +82,12 @@ void menu(){
     while (std::getline(menuin, line)){
         std::cout<<line<<"\n";
     }
+    std::cout<<"\n";
 }
 
 void UI::modifica_produs(){
     std::string name, producator;
-    float pret;
+    float pret = NAN;
     ProdusTip tip;
 
     std::cout<< "Nume: ";
@@ -94,15 +99,16 @@ void UI::modifica_produs(){
     std::cout<<"Tip: ";
     try{
         std::cin>>tip;
-        return;
     }
     catch(ProdusTipExpection& e){
         std::cerr << e.mesaj();
+        return;
     }
 
     try {
         AttributeProdus attrib(name, producator);
         service_produs.modifica_produs(attrib, tip, pret);
+        std::cout << "Produs modificat cu succes!\n";
     } catch (const ValidatorException& e){
         std::cerr << "Validation error: "<< e.get_mesaj() << std::endl;
         return;
@@ -122,7 +128,8 @@ void UI::find_dupa_nume_si_producator(){
     std::cin>>producator;
 
     try {
-        service_produs.find_dupa_nume_si_producator(name, producator);
+        const auto& p = service_produs.find_dupa_nume_si_producator(name, producator);
+        std::cout << "Produs gasit: " << p << "\n";
     } catch (const ValidatorException& e){
         std::cerr << "Validation error: "<< e.get_mesaj() << std::endl;
         return;
@@ -134,7 +141,7 @@ void UI::find_dupa_nume_si_producator(){
 }
 
 void UI::filtrare_dupa_pret(){
-    float pret;
+    float pret = NAN;
 
     std::cout << "Pret: ";
     std::cin >> pret;
@@ -190,10 +197,75 @@ void UI::sortare_dupa_nume_si_tip() {
     std::cout << "\n";
 }
 
+void print_cos_total(const ServiceProdus& service_produs) {
+    std::cout << "Suma totala a cosului momentan: " << service_produs.cos_total() << " lei.\n";
+}
+
+void UI::undo() {
+    try {
+        service_produs.undo();
+        std::cout << "Undo realizat cu succes!\n";
+    } catch (const ValidatorException& e) {
+        std::cout << e.get_mesaj();
+    }
+}
+
+void UI::cos_goleste() {
+    service_produs.cos_goleste();
+    std::cout << "Cosul a fost golit!\n";
+    print_cos_total(service_produs);
+}
+
+void UI::cos_adauga() {
+    std::string nume;
+    std::cout << "Nume: ";
+    std::cin >> nume;
+    try {
+        service_produs.cos_adauga(nume);
+        std::cout << "Adaugat in cos!\n";
+    } catch (const RepoException& e) {
+        std::cout << "Repo Error: " << e.get_mesaj();
+    }
+    print_cos_total(service_produs);
+}
+
+void UI::cos_genereaza() {
+    size_t n;
+    std::cout << "Numar: ";
+    std::cin >> n;
+    service_produs.cos_genereaza(n);
+    std::cout << "Cos vizitat (Random generat)!\n";
+    print_cos_total(service_produs);
+}
+
+void UI::export_cos() {
+    std::string tip, nume_fisier;
+    std::cout << "Tip export (CSV/HTML): ";
+    std::cin >> tip;
+    std::cout << "Nume fisier: ";
+    std::cin >> nume_fisier;
+
+    try {
+        if (tip == "CSV" || tip == "csv") {
+            service_produs.cos_export_csv(nume_fisier);
+            std::cout << "Exportat cu succes in CSV!\n";
+        } else if (tip == "HTML" || tip == "html" || tip == "Html") {
+            service_produs.cos_export_html(nume_fisier);
+            std::cout << "Exportat cu succes in HTML!\n";
+        } else {
+            std::cout << "Tip invalid!\n";
+        }
+    } catch (const RepoException& e) {
+        std::cout << e.get_mesaj();
+    }
+    print_cos_total(service_produs);
+}
+
+
 void UI::run() {
     int exit=0;
     while(!exit){
-        int user_input;
+        int user_input = 0;
         menu();
         std::cout<<"Alege o optiune: ";
         std::cin>>user_input;
@@ -210,6 +282,11 @@ void UI::run() {
             case 9: {UI::filtrare_dupa_producator(); break;}
             case 10: {UI::sortare_dupa_nume(); break;}
             case 11: {UI::sortare_dupa_nume_si_tip(); break;}
+            case 12: {UI::undo(); break;}
+            case 13: {UI::cos_goleste(); break;}
+            case 14: {UI::cos_adauga(); break;}
+            case 15: {UI::cos_genereaza(); break;}
+            case 16: {UI::export_cos(); break;}
             default: {std::cout << "Optiune invalida!\n"; break;}
         }
     }
