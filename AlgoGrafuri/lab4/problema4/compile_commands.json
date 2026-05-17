@@ -1,0 +1,18 @@
+[
+    {
+        "file": "./src/p4.cpp",
+        "arguments": [
+            "/usr/bin/g++",
+            "./src/p4.cpp",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-std=c++11",
+            "-o",
+            "p4"
+        ],
+        "directory": "/home/missuki/Documents/projects/Uni/AlgoGrafuri/lab4/problema4",
+        "output": "p3"
+    }
+]
