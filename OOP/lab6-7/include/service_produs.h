@@ -2,6 +2,7 @@
 #define SERVICE_PRODUS_H
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include "abstract_repo.h"
 #include "attribute_produs.h"
@@ -167,6 +168,8 @@ class ServiceProdus{
          * @return const std::vector<Produs>& Reference to the cart products
          */
         const std::vector<Produs>& cos_get_all() const;
+
+        const std::unordered_map<ProdusTip, int> freq_tip() const;
 };
 
 #endif

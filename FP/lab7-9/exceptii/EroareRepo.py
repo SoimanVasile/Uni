@@ -1,2 +1,0 @@
-class EroareRepo(Exception):
-    pass

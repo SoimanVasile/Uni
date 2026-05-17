@@ -1,32 +1,22 @@
 CXX = g++
 
-# 1. Force Arch Linux Qt6 Paths
-QT6_PATH = /usr/lib/qt6/bin
-# Force the use of the Qt 6 Meta-Object Compiler
 MOC = /usr/lib/qt6/moc
-
-# If the above path is not found, use the standard Arch symlink for Qt 6
 ifeq ($(shell test -e $(MOC); echo $$?), 1)
     MOC = moc-qt6
 endif
 
-# 2. Extract Flags using pkg-config
 QT_FLAGS = $(shell pkg-config --cflags Qt6Widgets)
 QT_LIBS = $(shell pkg-config --libs Qt6Widgets)
 
-# 3. Compiler & Coverage Flags
-# We add $(QT6_PATH) to the PATH for this shell session so MOC finds its own dependencies
 CXXFLAGS = -Iinclude -Isrc -Wall -Wextra -std=c++20 -g -fPIC $(QT_FLAGS) --coverage
 LDFLAGS = --coverage
 
-# 4. Files and Directories
 SRCS = $(shell find src -name '*.cpp' ! -name 'moc_*.cpp')
 OBJS = $(SRCS:.cpp=.o)
 
 TEST_SRCS = $(shell find test -name '*.cpp')
 TEST_OBJS = $(TEST_SRCS:.cpp=.o)
 
-# 5. MOC logic - specifically looking in include/ for Q_OBJECT
 MOC_HEADERS = $(shell grep -l "Q_OBJECT" include/*.h 2>/dev/null)
 MOC_SRCS = $(patsubst include/%.h, src/moc_%.cpp, $(MOC_HEADERS))
 MOC_OBJS = $(MOC_SRCS:.cpp=.o)
@@ -34,27 +24,27 @@ MOC_OBJS = $(MOC_SRCS:.cpp=.o)
 TARGET = main
 TEST_TARGET = run_tests
 
-.PHONY: all clean coverage
+.PHONY: all clean coverage test
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS) $(MOC_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(QT_LIBS) $(LDFLAGS)
 
-# Rule to generate MOC files - explicit pathing
 src/moc_%.cpp: include/%.h
 	@mkdir -p src
 	$(MOC) $(QT_FLAGS) $< -o $@
 
-# Coverage target
-coverage: $(TEST_TARGET)
+$(TEST_TARGET): $(filter-out src/main.o, $(OBJS)) $(MOC_OBJS) $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(QT_LIBS) $(LDFLAGS)
+
+test: $(TEST_TARGET)
 	./$(TEST_TARGET)
+
+coverage: test
 	lcov --capture --directory . --output-file coverage.info --include "$(shell pwd)/src/*"
 	genhtml coverage.info --output-directory out
 	@echo "Report: file://$(shell pwd)/out/index.html"
-
-$(TEST_TARGET): $(filter-out src/main.o, $(OBJS)) $(MOC_OBJS) $(TEST_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(QT_LIBS) $(LDFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@

@@ -148,8 +148,15 @@ const std::vector<Produs>& ServiceProdus::cos_get_all() const {
     return cos_cump.get_all();
 }
 
-// const std::unordered_map<ProdusTip, int> ServiceProdus::count_tips() const {
-    // const auto& list = this->repo_produs.get_all();
-    // std::unordered_map<ProdusTip, int>
-    // for ()
-// }
+const std::unordered_map<ProdusTip, int> ServiceProdus::freq_tip() const {
+    const auto& list = this->repo_produs.get_all();
+    std::unordered_map<ProdusTip, int> freq;
+    for(auto& item : list){
+        if (freq.find(item.get_tip()) == freq.end()){
+            freq[item.get_tip()]=1;
+            continue;
+        }
+        freq[item.get_tip()]++;
+    }
+    return freq;
+}
