@@ -1,0 +1,77 @@
+[
+  {
+    "file": "./src/App.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "./src/App.cpp",
+      "-o",
+      "main"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/SDA/lab6",
+    "output": "main"
+  },
+  {
+    "file": "./src/TestScurt.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "./src/TestScurt.cpp",
+      "-o",
+      "main"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/SDA/lab6",
+    "output": "main"
+  },
+  {
+    "file": "./src/IteratorMDO.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "./src/IteratorMDO.cpp",
+      "-o",
+      "main"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/SDA/lab6",
+    "output": "main"
+  },
+  {
+    "file": "./src/TestExtins.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "./src/TestExtins.cpp",
+      "-o",
+      "main"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/SDA/lab6",
+    "output": "main"
+  },
+  {
+    "file": "./src/MDO.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "./src/MDO.cpp",
+      "-o",
+      "main"
+    ],
+    "directory": "/home/missuki/Documents/projects/Uni/SDA/lab6",
+    "output": "main"
+  }
+]
