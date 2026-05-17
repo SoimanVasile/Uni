@@ -1,0 +1,1 @@
+implementati un program care creeaza 5 threaduri scriitori si 50 de threaduri cititori. Scriitori incrementeaza o variabila globala si cititorii ii verifica valoarea. Fiecare thread raporteaza cand inainte sa blocheze si dupa ce prinde lock

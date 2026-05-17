@@ -1,0 +1,1 @@
+sa se implementeze un proces care creeaza 3 procese fiu, procesul parinte citeste propozitii de la intrarea standard si le trimite prin rotatie fiilor, cand parintele primeste ca input stop, trimite un semnal fiilor care se incheie si apoi parintele se incheie
