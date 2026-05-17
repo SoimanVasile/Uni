@@ -1,0 +1,2 @@
+class EroareConsola(Exception):
+    pass
